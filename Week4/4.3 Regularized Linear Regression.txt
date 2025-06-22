@@ -1,0 +1,260 @@
+- Today we will look at some popular variant
+of least squares regression.
+So we'll begin by considering questions of generalization.
+Does doing well on the training set
+mean that you will necessarily do well
+on future test data?
+And if not, are there loss functions
+that aren't exclusively geared
+to one's performance on the training set?
+This will lead to the popular notion of regularization.
+And we'll see two regularized forms
+of least squares regression that are called
+ridge regression and the lasso.
+Okay, so least squares regression involves
+finding a linear function that minimizes
+the squared loss on the training set.
+Does this mean good performance
+in terms of low squares loss on future data as well?
+Well, not necessarily.
+So, there are two regimes that are useful to consider.
+If n is large, that is if you have a lot
+of training data, then good performance
+on the training set might reasonably indicate
+fairly good performance in future as well.
+But if n is small, then performance
+on the training set is probably a gross underestimate
+of future error.
+And let's see this by means of concrete example.
+So, here's a data set in which there's just
+one feature x and a response value y
+on the y axis.
+If we were to fit a line to this data,
+it would look something like this.
+And in this case, the line is just given
+by two parameters.
+It's just a one dimensional setting.
+So we have two parameters,
+and we have something like 100 data points.
+So this is a generous amount of data
+given how few parameters we need to fit.
+And in this case it's quite plausible
+that the training error is a reasonable estimate
+of the kinds of error rates that will appear
+on future data as well.
+But suppose we didn't have this much training data.
+Suppose that instead of these 100 points,
+we just have, say, one of them.
+What line would we fit to this one data point?
+Well, there are lots of possibilities.
+We could fit this line
+or this line or this line.
+And they all have zero training error.
+Does this mean zero error on future test points?
+No, certainly not.
+Okay, so that's an extreme case.
+Let's say that instead of one training point,
+we had two training points.
+In this case, the line we would fit would be
+something like this.
+Again, this is zero training error.
+How would this line do on future test points?
+Well, let's go back and see
+what the distribution looked like.
+This is the overall distribution of the data.
+This line would perform very poorly on it.
+Okay, so, all of this raises some big questions.
+The first big question is,
+if training error is not a good measure
+of future test error,
+how do we get a good estimate of future error?
+And the usual way to do this, one simple
+way of doing this is by cross validation.
+Now, we talked about this when we were doing
+nearest neighbor, but let me just quickly go over it again
+since it's really a very important technique.
+So in k-fold cross validation,
+what we would do is to take our training set
+and divide it into k chunks of equal size.
+So if we have n points, we divide them
+into k groups of n over k points.
+Then we take the first chunk
+and think of it as a test set.
+We would train on the remaining k minus one chunks.
+That would yield some linear function.
+And then we would evaluate the function
+on chunk number one.
+This would give us some error rate.
+Then we think of chunk two as the test set.
+And we train on the remaining k minus one chunks.
+We get some linear function and evaluates it on chunk two.
+And so on, we then think of chunk three as the test set.
+So in this way, we get k different error estimates,
+E one through Ek.
+And we just return their average.
+And this is a much more reasonable estimate of future error.
+Okay, so that resolves that question.
+The second question is,
+if it is the case that training error
+is really not a very good measure of future error,
+then why are we using an optimization criterion
+that's based exclusive on training error?
+Is there something else we could be optimizing?
+Something that would likely lead
+to better future performance?
+And indeed there are other optimization criteria
+of this type.
+So let's look at an example.
+In ridge regression, the goal is, as before,
+to learn a linear function.
+So given by w and b.
+But the loss function is a little bit different.
+So there is the least squares loss as before.
+But there's also an additional term
+called a regularizer.
+In this case, it's just the squared l two norm of w
+times the constant lambda.
+So what is the effect of this?
+What is this regularizer going to do?
+Let's look at two extremes.
+Suppose we set lambda equal to zero.
+In this case, the second term just falls away.
+It doesn't matter, and we just get regular
+least squares regression.
+So in this case w would be the least squares solution.
+This is a reasonable solution
+if we have a lot of data.
+Now let's say we set lambda to be something large.
+In fact let's let lambda go to infinity.
+What happens then?
+Well, if lambda goes to infinity,
+the only thing that matters is the second term.
+And so we will at all costs make w
+as small as possible.
+We will try to shrink its norm as much as we can.
+And in fact we'll just set w to zero.
+This is a reasonable solution
+if we have no data at all.
+Now, in practice what we'll be doing is to choose
+some value of lambda that's between these two extremes.
+And so what it will do is to do something like least squares
+but to move that solution closer to zero,
+to shrink it towards zero, in a sense.
+And for this reason, it is sometimes called
+a shrinkage estimator.
+In fact, for ridge regression, we have a nice closed form
+equation for the optimal w.
+Let me show you what it is.
+This is the formula for w.
+Now, if we set lambda to zero,
+the lambda times identity term drops out.
+And we just get the least squares solution
+that we saw last time.
+But as we grow lambda,
+this first term over here becomes larger.
+And so the inverse of it
+puts it in the denominator.
+It means that we have a larger and larger denominator.
+And so we shrink the resulting w.
+Let's see how this works out in practice.
+So over here, I've created a toy data set
+in which there are 100 features, x one to x100.
+Each of which has a Gaussian distribution.
+And there's also a response value y.
+And the interesting thing here is that the response
+depends on only 10 of the features.
+It only depends on features x one through x10.
+And the remaining features, the remaining 90 features
+are pure noise.
+Now, the training set and test set
+each consist of 100 points.
+100 training points in 100 dimensions.
+Is that a lot of data?
+No, it certainly is not.
+In fact you can pretty much always fit
+100 points in 100 dimensions.
+It's like having 100 linear equations
+in 100 unknowns.
+So there isn't much data.
+And let's see what ridge regression would do in this case.
+So lambda is something that we need to set.
+So let's look at a wide range of different value of lambda.
+When lambda is very small, like in this line over here,
+as we saw, we are essentially getting
+the least squares solution.
+The regularization term doesn't matter in this case.
+So it's the least squares solution.
+It has zero training error, why?
+Because, as I said, you can pretty much always
+fit 100 points in 100 dimensions.
+But the test error is very high.
+So least squares is not doing very well in this case.
+Now let's look at the other extreme,
+when lambda is very large.
+In this case, as we saw, what's happening is that
+we are gonna get a minuscule w,
+something that's pretty close to zero.
+So this is interesting.
+When w is essentially zero,
+the training error is 12.6.
+This emphasizes just how bad the least squares estimator is.
+It's getting a training error of 585.
+So it's really doing very, very poorly in this case.
+Now, as we grow lambda, what's happening is that
+we are gradually reducing the emphasis on the training set.
+And we're gradually increasing the emphasis
+on having a small w.
+So since we're reducing the emphasis
+on the training set, the training error is gradually
+creeping up, as you can see.
+But the test error goes down for quite a while.
+And in fact it bottoms out over here.
+At that point it starts to increase again
+because what's happening then is essentially
+we are not paying enough attention to the training set.
+So the optimal value of lambda in this case
+would be somewhere around here.
+How would we choose the optimal lambda in practice?
+Well, quite simply by cross validation.
+Okay, so we talked about one shrinkage estimator,
+ridge regression, in which the regularization term
+was simply the squared L two form of w.
+But what if we use a different norm?
+What would happen in that case?
+Well, one very popular choice
+is to use the L one norm.
+And in that case the estimator is called the lasso.
+So it has roughly the same good generalization behavior
+as a ridge regression.
+But it has one additional big added benefit,
+which is that it tends to produce sparse solutions w.
+That is to say it produces vectors w
+that sends to have a lot of zeros in it,
+just a few nonzero entries.
+So, for example, if you were to go back
+to our little toy data set over here
+and run the lasso on it,
+the w it would find would only
+have a few nonzero features.
+It would identify the 10 relevant features
+and actually also find a few more.
+This is pretty impressive.
+Now, in general, why would we want sparse solutions?
+Why is it attractive to have a w that is sparse?
+Well, there's certainly some computational benefits.
+If we're only using a few features,
+then that means there's much less data that we need to store
+and the computation is also more quick.
+But most of all, the benefit of having a sparse w
+is that the resulting linear model
+is easier to understand and to interpret.
+And humans are much more likely to appreciate
+and use a model that they actually understand.
+Okay, so that concludes our treatment of regression.
+One thing we haven't talked about
+is going beyond linear regression to regression.
+To regression that, for example, uses polynomial functions.
+But a little bit later in the class,
+we will develop some methods that show
+how this can be managed quite easily.
+See you next time.

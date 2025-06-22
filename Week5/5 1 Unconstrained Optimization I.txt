@@ -1,0 +1,270 @@
+- Over the past few lectures,
+we have been using optimization
+to solve prediction problems.
+What we do, basically, is to define
+a suitable loss function, and then learn our parameters
+by minimizing that function.
+That's what we did for least squares regression,
+and for logistic regression, and we'll be doing
+a whole lot more of that in the upcoming weeks.
+Indeed, optimization lies at the heart
+of modern machine learning.
+Now, sometimes, the problem that you need
+to solve falls neatly into some predefined category,
+and then you're in luck.
+You can just use existing software for logistic regression,
+or lasso, or support vector machines.
+But, other times, you find that in order to get
+a really good solution you have to come up
+with a customized loss function,
+something that's really tailored made to the domain.
+What do you do in those cases?
+In those cases, you can no longer fall back
+upon existing code.
+Well, it turns out that there are some relatively
+straightforward ways of coming up with minimization
+algorithms for essentially any loss function,
+and today we'll look at one of those methods
+called gradient descent.
+Becoming familiar with this is really a source of power,
+because it liberates you from having
+to use canned solutions.
+So today, we'll start by talking about what it means
+to solve an optimization problem using local search,
+and about the problem of having multiple local optima.
+We'll then look at the algorithm, gradient descent.
+All that's needed in order to use it is to be able
+to compute the derivative of the loss function,
+and we'll talk a little bit about what that means.
+Okay, so for much of machine learning,
+the way we learn is by defining a suitable loss function,
+and then minimizing it.
+So these examples, for example, these are the loss functions
+for least squares regression and for logistic regression.
+How do we minimize loss functions like this?
+How do we find the minimizing parameters, W?
+And for the most part, we do this by local search.
+So we start with some guess for W, and then we tweak it
+a little bit to make it better, to reduce the loss,
+and then we tweak is some more, and then we keep going
+until this whole process converges.
+Pictorially, this is what it looks like.
+So along the horizontal access I have the parameters, W,
+and along the vertical axis
+is the loss function, L of W.
+And the thing we're looking for is the minimizer
+of this loss function.
+So this is the point we want, let's call that W star.
+What does local search do?
+Well, local search starts with any old solution,
+so let's say it starts over here, at this loss value.
+And then it tweaks it to make it a little bit better.
+So maybe jumps a little bit like that, to this point.
+And then it tweaks it some more, and so on, and it keeps
+going, until it finally gets to a place
+where there's no longer any little tweak
+that's going to help.
+And then it stops.
+And in this case, it ends up finding the correct answer.
+Now, a lot hinges upon where you start.
+So if your initial guess at the parameter,
+for example, is over here, so some point like this,
+then, local search might simply wind you up over here,
+which is a local optimum,
+but it's not the right solution.
+It could be something that's much worse than W star.
+So the problem is that this particular loss function
+has a lot of local optima.
+There are all these different places
+where a local search algorithm can get trapped.
+Unfortunately, this kind of loss function
+arises all the time in machine learning,
+and by and large we are resigned to this.
+But we really love the situations
+where the loss function is a little bit better behaved,
+and we actively seek them out.
+So what kind of loss functions do we want?
+Well, we want loss functions like this.
+Loss functions that are convex.
+So, very soon we'll be defining exactly what this means,
+but for the time being, the way you can think of it
+is that the loss function looks like a bowl,
+and we just want to get to the bottom of the bowl.
+So there's only one local optimum,
+and that's also the global optimum.
+And as a result, functions like this
+are pretty easy to minimize.
+So, how exactly do we do this, though?
+Suppose we're at a particular value of W,
+how do we know which way to move?
+So, this picture, for example, has a one-dimensional W.
+How do we know whether to go left or right?
+One easy way to do this is by looking at the slope,
+or derivative of the function.
+So let's see what exactly that means.
+Let's say, for example, that my current guess
+of W is over there.
+So let's look at the slope over there.
+This is the slope, and the slope is positive.
+Now, what that means is if you increase W, the function
+goes up, and if you decrease W, the function goes down.
+What do we want to do?
+Do we want the function to go up or down?
+Well, we're trying to minimize the function,
+so we want it to go down, so that means
+we have to move to the left.
+So the slope tells us that we have to move to the left.
+The slope is positive, so we want to go the other way,
+to the left.
+Now, suppose our parameter estimate was somewhere there.
+So the slope over there looks like this, and in that case,
+the slope is negative.
+So, if we want to decrease the function,
+we have to move to the right.
+Again, the slope is negative, so we increase W,
+we move in the opposite direction to the slope.
+And this is a rule that can be used in general.
+The way you can adjust the current parameters, W,
+is to simply move opposite to the gradient.
+And that gives us the gradient descent algorithm.
+So, let's say there's this function we want to minimize,
+L of W, and W might say consist of D parameters.
+So W might be a D-dimensional vector.
+We start by initializing W to anything,
+so our initial setting for W might, for example,
+just be zero.
+And then we keep tweaking W.
+At time T, our current setting for W,
+our current guess at W is W sub T,
+and then we tweak it a little bit,
+and get W sub T plus one.
+So what is exactly is this tweak?
+Well, what we do is we compute the derivative
+of the loss function at W sub T, the derivative,
+and then we want to move in the opposite direction,
+so we take the negative of that.
+That tells us the direction in which we want to move,
+but we also have to decide how far we go in that direction.
+And that is the step size, eta sub T.
+Now that thing that looks like an N is actually
+the Greek letter eta, and that's the step size.
+For now you can think of it as a small constant if you like,
+we'll talk about it in more detail later on.
+And that tells us how far we go in that direction.
+So we have our current estimate, W sub T,
+we tweak it a little bit, we get W sub T plus one,
+and we keep going in this way until we finally converge,
+and that's it, that's the answer.
+An extremely simple algorithm, it's just four lines of code,
+and it can be used to solve a huge variety
+of different problems.
+So what do we need to do in order to use this algorithm?
+Well, there's really just one thing we need to do,
+and that is to compute this derivative over here.
+The derivative of the loss function.
+Let's see exactly what that entails.
+So one thing that I think we're all pretty familiar with
+is finding the derivative of a function of one variable.
+So if you have, for example, Y equals three X squared,
+what is the derivative of Y, what is D Y D X?
+It's just six X.
+So we know how to do that.
+But what happens when you have
+a function of multiple variables?
+So there's a function over here,
+which is a function of three variables.
+It's a function of three variables,
+W one, W two, and W three.
+What does it mean to do the derivative in that case?
+Well, now you can take the derivative
+with respect to three different things,
+and the first step is to take
+these three derivatives separately.
+So let's start with the derivative with respect to W one.
+When we're computing this derivative, what we do is
+we treat the other variables, W two and W three,
+essentially as constants.
+So what do we get?
+What is the derivative of this expression over here
+with respect to W one?
+It's just three W two.
+Now, let's take the derivative with respect to W two.
+Okay, what do we get, three W one.
+And finally, let's take the derivative
+with respect to W three.
+Now there's only one term that involves W three,
+the last term, the derivative is one.
+Okay, so those are the three separate derivatives.
+The overall derivative of F, which we denote like this,
+is obtained by just stacking together these three
+derivatives with respect to a single variable.
+So it's a vector, where we start by taking
+the derivative with respect to the first variable,
+then the derivative with respect to the second variable,
+and finally the derivative
+with respect to the third variable.
+So it's the vector three W two, three W one, and one.
+It's a three-dimensional vector,
+that's the derivative of F at any value W.
+Let's do another example.
+So this time, we have a function of D variables.
+So we have a function of D variables, W one, W two,
+all the way to W D.
+And what is the function?
+It's just the dot product of W and X.
+So it's W one X one, plus W two X two,
+all the way to W D X D.
+So now we compute derivatives with respect to
+each of these D variables separately.
+So what is the derivative with respect to W J?
+Well, in that big summation there's only one term
+that involves W J, W J X J.
+So the derivative is just X J.
+Now let's stack these together in a vector.
+So the derivative of F at W is the derivative
+with respect to W one, which is X one,
+the derivative with respect to W two, which is X two,
+all the way to the derivative with respect to W D,
+which is X D.
+And what is this vector?
+It's just X.
+So the derivative of this function
+is just the D-dimensional vector, X.
+Okay, one more.
+Again, we have a function of D variables.
+Let's go ahead and write in out in full.
+So we have these D variables, W one, W two,
+all the way to W D, and what is the function?
+It's the squared norm of W, so it's W one squared
+plus W two squared, all the way to W D squared.
+And now again, we have to compute the derivative
+with respect to each of the D things individually.
+So what is the derivative with respect to W J?
+Well, W J is in only one of those terms
+and that's W J squared,
+so the derivative is two W J.
+And putting these together in a vector,
+we find that the derivative at W is two W one, two W two,
+all the way to two W D.
+In other words, it's two W.
+Again, a D-dimensional vector.
+So in general, if you have a function of D variables,
+then its derivative is a D-dimensional vector.
+So now let's go back to the gradient descent algorithm.
+And let's say that the function we're minimizing
+is a function of D variables.
+Let's go ahead and look at this update rule.
+So what is this derivative now?
+Well, we've seen that that derivative is a D-dimensional
+vector, so this update will make sense.
+W is D-dimensional, and we're subtracting off
+a D-dimensional vector, so it's all sensible,
+at least in terms of the dimensions being aligned.
+How exactly does this rule work?
+Why does it reduce the loss to move in this direction?
+Well that's something we'll see next time.
+So, that's it for now, and we've got a little bit
+of a glimpse of gradient descent.
+And next time, we'll look at this algorithm
+in a little bit more detail.
+See you then.

@@ -1,0 +1,277 @@
+- Today, we'll look at how to learn
+a logistic regression model from data.
+So we'll begin by reviewing the form
+of the logistic regression model
+and then we'll phrase the learning problem
+as an optimization task, in which the goal
+is to minimize a suitable loss function.
+It'll turn out that this is a very nice loss function.
+In particular, it is convex.
+We'll then see how this function can be minimized
+using gradient descent.
+So here again is the logistic regression model.
+We were looking at the case of binary labels,
+where Y can only take on two possible values,
+minus one and plus one.
+The data points X lie in say
+D dimensional space
+and for any given point X
+the probability of Y
+where Y is either minus one and plus one,
+is given by this formula over here.
+We first compute a linear function of X
+W dot X plus B, and then we take
+one over one plus E to the minus Y
+times that linear function.
+This is the logistic regression model
+and it has two parameters, W and B, that we need to set.
+So, what does this look like geometrically?
+If we look, for example, at the boundary
+okay so we have the plus side,
+we have the minus side, what is the decision boundary?
+Well, it's the set of points for which
+this probability is exactly a half.
+And those are the points for which
+W dot X plus B equals zero.
+Okays so,
+we have some set of points for which
+W dot X plus B equals zero,
+and this is the decision boundary.
+Plus on this side and minus on this side.
+Now in two dimensions, this boundary is a line.
+In three dimensions, it's a plane.
+And in higher dimensions, it's a hyperplane.
+Now put at the points for which
+the probability of Y being one is 60%.
+Well, it's a parallel hyperplane on this side.
+It's something like this.
+And what are the points for which
+the probability of Y being one is 40%?
+Well, it's another parallel hyperplane, on the other side.
+And so as one moves away so this central hyperplane
+over here, W dot X plus B equals zero,
+is the decision boundary and
+as one moves further in this direction,
+the probability of Y being one increases,
+and in this direction it decreases.
+So this is nice and intuitive.
+And the remaining question now is how do we learn
+this linear function, this W and B, from data?
+So let's see how we do that.
+So we have a set of data points, X one through X N,
+along with their labels, Y one through Y N.
+What we're gonna do is to use
+the maximum likelihood principle
+and we're gonna pick the linear function,
+the W and B, that maximizes the probability of the data.
+Okay, so what we wanna maximize is
+the probability of Y one given X one,
+times the probability of Y two given X two,
+times the probability of Y three given X three,
+all the way to the probability of Y N given X N.
+Okay, so we have a concrete optimization criteria.
+So we're in good shape.
+Now, one little problem over here is that
+this function that we're trying to optimize
+has got this big product in the front and
+this can be a little bit inconvenient.
+It would be simpler if we were instead dealing with a sum.
+So how do we go from a product to a sum?
+Well we just take the logarithm.
+Okay so if you remember, the logarithm of A plus B,
+of A times B, is the log of A
+plus the log of B.
+So instead of maximizing this function
+we can just go ahead and maximize its log
+which leads to the same answer
+and then what we get is this sum over here.
+Now we're also gonna stick a minus in front
+so that instead of maximizing,
+we actually wanna minimize, okay?
+So this then is our final loss function.
+This function over here.
+We want to find the W and B
+that minimize this function.
+How do we do that?
+Well if you remember, when we were talking about
+least squares regression, we were
+in a little bit of a similar situation.
+We also wanted to find some W and B,
+and we also had a loss function
+that we were trying to minimize.
+So what was it that we did back then?
+Well the first thing we did was that
+we tried to get rid of B, because
+it's a little bit of a nuisance.
+So how do we do that?
+Oh, well what we said is that if you add a feature to X,
+if you take your data vector as X
+and you add an extra feature that's
+identically equal to one,
+then you can just assimilate B into W.
+B just becomes another coordinate of W.
+Okay so let's just start by doing that.
+And then we can forget about B
+and we just have a loss function
+that's in terms of the W, okay?
+So that's a help, but still what is the optimal W?
+What is the solution?
+And there's good news and bad news.
+The bad news is that there's
+no closed-form equation for W.
+And when we were doing least squares regression,
+we had this nice formula,
+W equals something nice and simple.
+But that's rare.
+That almost never happens and that
+does not happen in this case.
+Okay, so that's the bad news.
+The good news is that the loss function
+is very well-behaved.
+It is convex.
+What does that mean?
+Well it's a very important concept.
+It's something that plays a central role
+in machine learning and we'll be spending
+more time on it later on.
+But we won't get into it right now, for the time being,
+what it means is that the loss function
+basically looks like a bowl.
+And we wanna get to the bottom of the bowl, okay?
+Okay, but what's so great about that?
+Well what's great about it is that
+the loss function does not look like this.
+Now loss functions like that
+also arise very frequently in machine learning
+and they are much more troublesome
+because they have all these local optima
+in which we can get stuck.
+The convex situation is much nicer.
+There's just one local optimum over here,
+and it's also the global optimum.
+So how do we find that point?
+How do we find that optimal value W?
+Well the way we're gonna do it is by local search.
+Okay, what that means is you start off at any old point,
+let's say you start off by guessing
+that as being the right W.
+And then you just tweak it to make it a little bit better
+and you tweak it a little bit more to make it better
+and then you keep doing these little tweaks
+until finally, you end up somewhere around here
+and you find that none of the tweaks
+are really helping anymore and so
+you decide that you've converged and that's the answer.
+Okay, so that's local search.
+In a sense, you're starting over here
+and gradually rolling down the hill.
+So when you're at a particular value of W,
+let's say this is what your current guess at W is,
+how do you know which way to go?
+Well there are many ways to decide this.
+But one rather simple way is by
+looking at the slope of the function.
+Okay, so at this point for example,
+the function's slope is positive.
+What does that mean?
+Well it means that if you go this way
+the loss function will increase,
+and if you go that way, it'll decrease.
+What do we want?
+Do we want to increase it or decrease it?
+We wanna decrease it because we're trying to minimize it.
+So we know we have to move to the left.
+Likewise over here, the slope is negative.
+So we know that if you go that way, it goes down,
+the function goes down.
+And if you go that way, the function goes up.
+So we have to move to the right, okay?
+So in this way, the gradient or slope of the function
+can really serve as our guide.
+We just have to move in the opposite direction
+to the gradient.
+And doing that is called gradient descent.
+Now, we're gonna be talking about optimization
+in more detail later on.
+And we'll also be spending
+quite a bit of time on gradient descent.
+So I'm not gonna explain exactly how
+the gradient descent procedure for logistic regression
+comes about right now, but I just wanna show you
+what the procedure looks like,
+'cause it's extremely simple.
+So we begin by setting W to some value
+say the all zeroes vector.
+That's our initial guess for W, W sub zero.
+At time T, our guess for W is W T,
+and then we're gonna tweak it a little bit
+and we get our updated guess, W T plus one.
+So what is this tweak that we do?
+Well we take W and we look at the negative gradient
+and we move in that direction times a small step size.
+Okay, so what are these two things?
+Well let's look at the summation first.
+The Ys, well the Ys are just plus one or minus one.
+This is some probability, some number,
+and these are the data vectors.
+So it looks like we're doing some sort of
+weighted average of the data points, okay?
+Where the weight for a particular X i
+depends on how well we classified it.
+So suppose that the current guess
+W sub T
+assigns high probability to the wrong label for X i.
+Okay so let's say it assigns
+high probability to the opposite label, negative Y i.
+That means we're doing pretty badly on that point
+and in this case we'll increase the weight on it.
+Okay, so we emphasize that point a little bit more.
+We know that it's a point we really need to work on.
+So we compute a weighted average of this kind,
+which is quite intuitive, and then
+so that gives us a direction in which to move,
+but we also have to decide how far
+we wanna move in that direction.
+And for that we use the step size over here.
+Now this is again something we'll be
+talking about more later on.
+For the time being, you can just pretend
+that it's a constant, something like point one.
+Although, as we'll see later,
+it often makes sense to reduce it as time goes on.
+Okay, so this is a nice simple algorithm
+for a logistic regression.
+So let's see what it does on our toy example.
+So again we have these two classes,
+let's say this is minus one and
+let's say this class is minus one and this is plus one.
+We go ahead and sample some points
+and assign them their correct labels.
+And then we apply that gradient descent procedure
+to find the right linear function.
+And this is what it ends up finding.
+Okay, so what are these three lines?
+This line over here, is the decision boundary, the 50% line.
+This line over here is the 25% line.
+And this line on this side is the 75% line.
+Okay so what it's saying is that
+if you look at this line on the top
+if you look at the Xs that lie along that line,
+there is a 75% probability that the label is green.
+And if you look at this line over here,
+it says that for the Xs along that line,
+there is a 25% probability that the label is green.
+In other words, a 75% probability that the label is purple.
+Is that reasonable?
+Well, maybe.
+In general, when you're using the conditional probabilities
+from a logistic regression model,
+you do have to take them with a little grain of salt.
+Okay, well that's it for today.
+We've see how a logistic regression model
+can be learned from data, and we've tried it out
+on a toy data set.
+Next time, we'll try it out
+on a more substantial learning problem,
+a text classification task.
+See you then.

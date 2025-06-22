@@ -1,0 +1,269 @@
+- Last time, we introduced gradient descent,
+a general purpose algorithm for minimizing a loss function.
+Today, we will continue that discussion.
+So we will by talking about why exactly
+gradient descent works, and also about
+the issue of how to set the step size.
+Then, we will see how easy it is
+to derive a gradient descent algorithm by looking at
+logistic regression as an illustrative example.
+So this is the gradient descent algorithm.
+There's some loss function, l, that we want to minimize,
+and we wanna find the parameter vector, w,
+that optimizes this function.
+The way we do it is by starting w at zero and then
+entering into this loop where we keep adjusting w,
+we keep tweaking it a little bit,
+until it finally converges.
+So, what are these updates?
+Well, if the current parameter vector is w sub t,
+what we do is we compute the gradient.
+We compute the derivative of the loss function,
+at w sub t,
+and we move in the
+opposite direction to that derivative
+with some step size a to sub t.
+It's a very simple update.
+And, the question is, why does this work?
+So, let's think about this a little bit.
+Now, gradient descent uses the
+derivative of the loss function.
+If the derivative exists, it means that
+the loss function is locally linear.
+Okay, what's that?
+Well here's a picture of loss function.
+Is it linear? No, it's not.
+But let's look at a little window,
+let's look at a little neighborhood.
+So, let's pick a point on the function
+and look at a little window around that point.
+Let's zoom in a little bit.
+Here's what it looks like.
+Is it linear now?
+No, it's not linear, but it's more linear than before.
+So, let's zoom in a little bit more.
+We pick a point, zoom in, and now it's linear.
+So, if one looks at the function close up,
+if one looks at a small enough neighborhood,
+then the function is approximately linear
+in that neighborhood.
+And the linear approximation is given by
+the derivative of the function.
+Okay. So let's look at this more concretely.
+So we have some loss function, l,
+and we're gonna look at it in
+just a very small neighborhood.
+A small neighborhood around the point w.
+So that means that the kind of points that we're looking at
+are points very close to W, points of the form
+w plus u, where u is some minuscule displacement.
+Now, because this neighborhood is so small,
+the function is approximately linear,
+and in fact, this is what it looks like.
+The value of l at w plus u
+is given by the value of w plus u
+dot product with the derivative of l and w.
+This is linear, and the derivative gives us
+this linear approximation.
+Okay, so let's see what this means for gradient descent.
+In gradient descent, l is this function
+that we are trying to minimize,
+and w is our current parameter vector.
+We're gonna tweak w a little bit,
+we're gonna move it from w to w plus u,
+and the specific u we pick in gradient descent
+is this value.
+It's the negative of the derivative
+times some step size ada.
+Okay, so let's plug in that value, u,
+into our linear approximation for the loss function.
+What do we get?
+So we get l of w plus u,
+so just looking at this linear approximation over here,
+l of w.
+Now u is negative ada
+times the derivative
+dot product with the same derivative.
+Now when you take a dot product of a vector with itself,
+you get the vector squared.
+And so, this
+is the value,
+approximately, of the loss function at w plus u.
+And what is it?
+It's the loss function at w, okay,
+minus something positive.
+So it's less than l of w.
+So moving in the direction opposite to the derivative
+is guaranteed to reduce the loss function.
+This is why gradient descent works.
+Okay, so we also have to talk about the step size, however.
+How should we set this ada?
+Well, if we think back to our discussion,
+if we think back to our mathematical justification,
+that linear approximation only holds
+in very small neighborhoods.
+So, that suggests setting the step size ada
+to something tiny.
+But if we did that, what it would mean,
+is that w would only change a tiny bit on each iteration
+and progress would be very slow.
+So that's not really something we'd like to do.
+We'd like to set ada larger.
+But if we set it too large, then we might
+overshoot the mark, and end up at
+a worse place than where we began.
+Okay, so let's look at this example over here.
+So here we have
+a one dimensional w,
+and we have a loss function shown on the y-axis,
+and let's say that our current parameter is
+this value over here.
+By looking at the gradient, we know
+that we have to move to the left.
+But we have to set the step size ada,
+we have to decide how far to the left we wanna move.
+If we move too far to the left,
+we could end somewhere like this.
+We could end up with a loss value
+that's higher than where we began.
+So, this sounds pretty tricky.
+How are we gonna set this value ada?
+Now, unfortunately, there's no straight answer to this.
+Different people have different ways
+that they like to set this constant.
+And all I'm gonna do here is to put out two alternatives.
+One thing that one could do is to set this step size ada
+to some fixed schedule, like setting ada t to be one over t.
+In fact, a lot of the mathematical analysis
+of gradient descent assumes something like this.
+Another, more sophisticated alternative
+is to set the step size adaptively.
+So, we're at a particular vector w,
+we know which direction the derivative is in,
+so we know which direction we're gonna move in,
+and what we can do now is to do a line search
+along that direction to find the optimal displacement,
+the value of ada for which the loss will decrease the most.
+You can imagine some combination of
+sampling and binary search to achieve this.
+Okay, so we've been talking about gradient descent
+fairly abstractly, but now let's get more concrete
+and actually go ahead and derive
+a gradient descent algorithm, for the specific case
+of logistic regression.
+So, let's see, we have a data set, x1, y1 through xn yn.
+If you recall in logistic regression, you're looking for
+a linear function given by some parameter vector w
+that minimizes this loss function over here.
+Now, actually we usually have an offset v as well.
+So we're looking for w and v.
+But if you remember, one of the things we showed
+is that you can always assimilate v into w
+by adding an extra feature.
+So, let's just assume we've done that and that therefore,
+this is the loss function we're trying to minimize.
+Now to use gradient descent, all we really need to do
+is to compute the derivative of this loss function.
+So, let's go ahead and do that.
+Okay so, our parameter vector, w,
+has d numbers is in it.
+So, w is of the form w1 through wd,
+and so the derivative is gonna be a d-dimensional vector.
+So let's go ahead and compute the derivative of the loss
+with respect to some particular w sub j.
+What is it?
+Well, first off,
+the derivative of the sum is the sum of the derivative.
+So let's just pull out that summation.
+And then we have a logarithm.
+If you remember from high school or a long time ago,
+the derivative of log u is du over u.
+So let's go ahead and write down that
+denominator over there,
+one plus e to the minus yi w dot xi.
+And then on top, we have to write down
+the derivative of that, so it's
+Okay, so for that there's another rule,
+the derivative of e to the u is e to the u du.
+Okay so we get e to the minus yi w dot xi.
+And now we need to compute the derivative
+of this thing over here.
+What is that?
+So there's a dot product in there, let's just expand it out.
+So we have minus yi
+w1 times the first coordinate of xi
+all the way to wd times the dth coordinate of xi.
+Okay, we've expanded out the dot product
+And now we need to take the derivative of that
+with respect to wj, well there's only
+one term that involves wj.
+So the derivative is minus yi times xi sub j.
+Okay, so we've computed the derivative.
+Now that first term's a little bit messy,
+so let's simplify it.
+And one way we can do that is to take it
+and multiply top and bottom by
+e to the yi w dot xi.
+Okay, and if we do that, what do we get?
+Well the numerator just becomes one,
+and the denominator becomes 1 plus e to the yi w dot xi.
+So let's just copy this over now.
+So the derivative of the loss function of wj
+is minus the sum over all points from one to n
+of one over one plus e to the yi w dot xi
+times yi xi j.
+Now that first term actually looks familiar.
+Comparing it to the logistic regression function
+what we see is it's actually the probability
+under w
+of the label being negative yi given xi.
+And so this derivative is just the minus the sum over
+all data points of the probability of
+the opposite label negative yi given xi,
+the labels are all plus one or minus one,
+so minus yi is the wrong label,
+times yi xi j.
+Okay so that's the derivative in respect to wj,
+and the overall derivative is the vector
+in which we just stacked these up.
+So the overall derivative of the loss function at w
+is a vector where most of this is exactly the same,
+and we just have xi at the end.
+Okay so why is that, why is that what you get when you
+stack up these individual derivatives?
+Well, just look at this equation over here.
+Most of the terms here are scalers, are just numbers,
+so this is some number, this is either
+plus one or minus one, the only thing
+that's a vector is this x at the end.
+So the jth coordinate of this thing is
+exactly this formula over here.
+You copy down the same thing but you just
+take the jth coordinate of x.
+Okay, so we've computed the derivative of the loss function
+and now we're ready to write down
+a gradient descent algorithm.
+This is what it looks like.
+We initialize w to zero, then we begin
+our iterative updates.
+And when the current parameter vector is w sub t,
+the update looks like this.
+We compute a weighted sum of the data points
+and we simply add it to w sub t with
+sum step size ada sub t.
+So what exactly is this weighted sum?
+This is the ith data point, what is this weight over here?
+It is the probability of the wrong label
+under the current parameter vector.
+In other words, this weight is high
+if we are doing badly on that data point.
+And this makes perfect sense,
+we're placing more emphasis on the points
+on which we are currently doing badly.
+Okay, so that's it for now and for gradient descent,
+you now have, in your repertoire,
+the gradient descent procedure, and at this point,
+with a little bit of practice, you should be able to
+derive a gradient descent algorithm
+for any loss function you like, any loss function
+you wish to minimize.

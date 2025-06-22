@@ -1,0 +1,172 @@
+- Last time we wrapped up our discussion
+of gradient descent.
+What we'll do today is look at a variant of gradient descent
+that is suitable for very large data sets,
+it's called stochastic gradient descent
+and it's an essential part of the machine learning toolbox.
+So we'll begin by looking at the stochastic
+gradient descent algorithm for the specific case
+of logistic regression.
+And then we'll step back and see how stochastic
+gradient descent can be derived for more general,
+arbitrary, loss functions.
+Okay, so last time we derived the gradient descent algorithm
+for logistic regression.
+And this is what it looks like.
+So we want to find the parameter w,
+a parameter vector that minimizes the logistic regression
+loss function.
+And the way we do it, is as follows.
+We start by initializing w to zero.
+And then we enter into a loop where we keep updating w.
+We keep adjusting it until it finally converges.
+And each update is quite simple.
+If our current parameter vector is w sub t,
+what we do is to compute a weighted sum of the data points.
+Where the weight of a particular point is increased
+if we are currently doing badly on that data point,
+if this probability is high.
+So we compute this weighted sum
+and then we simply add it to w
+with a particular step size eight at sub t.
+So this is fairly straight forward.
+But one down side of this algorithm
+is that each update involves looking at the entire data set.
+So if there are end data points,
+the time taken for an update is order n.
+If there are a million data points for example,
+this update could be quite slow.
+And at the end of it all, the magnitude of the update
+could be something quite minuscule.
+So a whole lot of work for really a very small benefit.
+Because of this, in situations where there is a lot of data,
+there's a popular alternative to this algorithm
+called stochastic gradient descent.
+And this is shown over here.
+So it does much the same thing.
+Yet again initializes the w to zero and keeps doing updates.
+But now each update is based on a single data point,
+not on the entire data set.
+As a result, the updates are very quick.
+So it starts with w at zero and then it updates w
+based just on the first data point.
+And then it updates w again based on the second data point.
+And then on the third data point and it goes down the list
+and when it reaches the end of the data set
+it just cycles back around to the top
+and it keeps going in this way.
+What are these updates?
+Well here are the updates right here.
+It's exactly the same as the gradient descent update,
+except restricted to just one point
+so there's no summation any longer.
+So nice, simple, and practical.
+Now this is just for logistic regression,
+but something similar can be done
+for other loss functions, as well.
+It turns out that the gradient descent procedure
+typically ends up looking something like this.
+We end up with a summation over all the data points
+and then the stochastic gradient descent version
+is exactly the same thing, but instead of the summation,
+just doing one data point at a time.
+So let's look a little bit more carefully
+at how this all works out.
+So here if you will recall is the loss function
+for logistic regression.
+We are looking for the parameter vector,
+the model w that minimizes this loss function.
+And this is a loss function over the entire training set.
+Now it can also be expressed as the loss
+on the first data point,
+plus the loss on the second data point,
+plus the loss on the third data point, and so on.
+The loss function decomposes in this way.
+And in fact almost all the loss functions
+that we encounter in machine learning are of this form.
+So if we have a training set,
+x one, y one, through x n, y n.
+Then the loss associated with a particular model w,
+with a particular parameter vector w,
+can typically be expressed in this form.
+Here little l is a function that captures the loss
+on a single data point.
+So l of w x, y captures the loss of the model w
+on the single data point x, y.
+And the overall loss of w on the entire training set
+is then just the sum of these point y's losses.
+So what is this loss function?
+What does this little l in the case of logistic regression?
+Well it's just this function over here.
+So in the case of logistic regression,
+l of w;x,y is just the natural logarithm
+of one plus e to the minus y, w dot x.
+Okay, so let's say we have a loss function of this kind.
+As we've seen logistic regression is of this form
+and so is least squares regression,
+ridge regression, lasso, this is standard.
+So a loss function looks like this.
+And we want to find the parameter vector w
+that minimizes this loss.
+Now if we gonna use gradient descent to do this,
+we have to compute the derivative of l.
+Now l is a summation, so the derivative of l
+is the sum of the derivatives.
+So the derivative of l, is the sum from ah equals one to n
+of the derivative of little l,
+for the specific point x, i, y, i.
+So computing a derivative, involves a sum over the data set.
+Now as a result, this is what the gradient descent
+procedure looks like.
+To minimize this loss function,
+we start w at zero and then we start performing
+all these updates until we converge.
+When the current parameter vector is w sub t,
+the update involves moving in the opposite direction
+to the derivative.
+And as we've seen, the derivative works out
+to this summation over here.
+And what this means, is that computing one of these updates
+involves summing over the entire data set,
+which could be painful.
+The stochastic gradient descent version
+does something quite similar, except that each update
+only involves one data point.
+So again, it starts w at zero,
+but now it cycles through all the data points.
+And when it gets to data point x, y,
+the update just involves the derivative of little l
+at that specific point x, y.
+So it's something much simpler and quicker.
+And in the case of a very large data set,
+it's something much more practical.
+Now one thing worth pointing out
+is that gradient descent and stochastic gradient descent
+are really extreme ends of a spectrum.
+For gradient descent, each update involves
+the entire data set.
+And for stochastic gradient descent
+each update only involves one data point
+and is therefore potentially quite noisy.
+A nice compromise is to have each update
+depend on a reasonable amount of data,
+say 100 or a thousand data points.
+This is called mini-batch stochastic gradient descent.
+So what happens in this case, is that you start again
+with w at zero.
+But now the first update involves a batch
+of say the first 100 or thousand data points.
+So you update based on those points.
+Do the usual gradient descent update based on those points
+and then you move onto the next batch of a thousand points.
+Do one update based on those
+and then the next batch of a thousand points, and so on.
+And when you reach the bottom,
+you cycle back around to the top.
+So it's a very reasonable and sensible compromise.
+Okay, well that's it for today.
+We now have in our repertoire, two extremely powerful
+and general purpose optimization techniques,
+gradient descent and stochastic gradient descent.
+These have got to be among the most influential algorithms
+of all time.

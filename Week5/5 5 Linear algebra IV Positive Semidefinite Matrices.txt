@@ -1,0 +1,240 @@
+- Positive semidefinite matrices are square matrices
+that have many special properties.
+They arise all over the place in machine learning.
+So today, we'll see what it means for a matrix to be
+positive semidefinite, and we'll look at some of the
+properties of these matrices.
+We'll also cover the important question of how
+you figure out if a matrix is of this type.
+Now, when we were talking about convexity,
+we said that a function of one variable is convex
+if its second derivative is always positive.
+When you have a function of D variables however,
+the second derivative is a D by D matrix.
+What might it mean for a D by D square matrix
+to be positive?
+How could we define that?
+Well, one natural notion is to say that a matrix is positive
+if all the entries in it are positive.
+This is reasonable enough, but it turns out to be
+a superficial notion that doesn't really help us very much.
+There's a deeper and more insightful notion.
+We can say that a matrix,
+a square matrix, is positive
+if the quadratic function defined by it is always positive.
+Hmmm, let's see what this might mean.
+Okay, so here's a matrix.
+What is the quadratic function defined by this matrix?
+Well if you recall, the quadratic function
+defined by this matrix is the function that maps a vector x
+to x transpose Mx.
+So in this particular example, x has to be
+a two dimensional vector, okay.
+And the quadratic function sends this vector,
+say x one, x two, to x transpose,
+so x one, x two times M,
+one, one, one, one times x, x one, x two.
+What is that?
+Well, let's work it out.
+Let's start by doing this.
+So we get x one, x two,
+and here we get x one plus x two,
+x one plus x two.
+And now we do the last product and we get
+x one squared plus two x one x two
+plus x two squared.
+This is the quadratic function defined by the matrix, okay?
+Now if you look at the function, you can see
+that it can also be written like this:
+x one plus x two squared.
+And when you write it like that, it's a square
+which means that it always has to be greater than
+or equal to zero, no matter what x you plug in, okay?
+We have a matrix, in this case two by two.
+It defines a quadratic function on two variables,
+and this function is always greater than or equal to zero
+no matter what x you plug in.
+So we call this matrix N positive semidefinite.
+More generally, let's say we have a D by D square matrix.
+In that case the quadratic function defined by the matrix
+is this one, that sends a D dimensional vector x
+to x transpose Mx.
+So what exactly is x transpose Mx?
+Well, it works out to a number.
+And if you multiply it out, you'll see that it's
+actually just the summation.
+It's the sum over all ij of the ij entry of the matrix,
+times the i-th entry of x times the j-th entry of x.
+And if you add all those things up, that's x transpose Mx.
+So we'll say that a matrix N is positive semidefinite
+if first of all, it is symmetric, and second,
+if this quadratic function, x transpose Mx, is always
+greater than or equal to zero, no matter what x you plug in.
+This turns out to be a very powerful notion
+of what it means for a matrix to be positive.
+So let's look at an example, okay?
+So, we've seen that this matrix is positive semidefinite,
+we just worked through that example.
+What about this other matrix over here?
+Is that positive semidefinite as well?
+Well, it's a two by two matrix, so the quadratic function
+is the one that sends x one, x two
+to x transpose Mx, and if we just plug into our
+usual expansion, this would be, it would send this to
+x one squared
+plus four x one x two plus x two squared.
+That's the quadratic function given by the matrix.
+So is this always greater than or equal to zero?
+You know what, let's try some values.
+What about trying x one equals one
+and x two equals minus one?
+What happens then?
+In that case we get one minus four plus one,
+which is negative two.
+Okay, so this matrix is not positive semidefinite.
+And yet, it looks more positive than the other matrix,
+which we know is positive semidefinite.
+Here's another question.
+Suppose we have a diagonal matrix.
+Under what conditions is it positive semidefinite?
+Okay, so we have some diagonal matrix, so the diagonal
+entries are M one one, M two two, all the way to MDD.
+And everything else is a zero.
+When is a matrix like this positive semidefinite?
+Well, we know x transpose Mx has to be greater than
+or equal to zero.
+Why don't we try this x?
+Let's try the vector x, which is zero everywhere,
+except for a one at the i-th position.
+Okay so it's all zeroes
+except for a one at the i-th position.
+What is x transpose Mx?
+Well if we think of our summation,
+the sum of Mijxixj,
+you can see that x transpose Mx is just the i i entry
+of the matrix.
+And so we know that this has to be greater than
+or equal to zero.
+So that gives us a simple condition.
+A diagonal matrix is positive semidefinite
+if and only if all the diagonal entries
+are greater than or equal to zero.
+So for diagonal matrices, it's very easy to check.
+Okay.
+Now suppose we have a positive semidefinite matrix M,
+what about two times M?
+Is that positive semidefinite as well?
+Yes it is.
+And more generally what about c times M?
+Well, let's take a look.
+So, we have x transpose c times Mx,
+we can see it's just a constant, so we can pull it out.
+So it's c times x transpose Mx.
+And M is positive semidefinite, so this is greater than
+or equal to zero.
+C times that, is that greater than or equal to zero?
+Yes, provided c is greater than or equal to zero.
+So the answer is yes
+if c is greater than or equal to zero.
+Here's a related question.
+Suppose you have two matrices that are each
+positive semidefinite.
+What about their sum?
+Is that positive semidefinite?
+Well again, we can just try directly by plugging in
+to the definition.
+Let's take their sum, M plus N, and look at x transpose
+M plus N x.
+Now we can factor this,
+this is just equal to x transpose Mx plus x transpose Nx.
+And each of these are greater than or equal to zero.
+So the whole thing is greater than or equal to zero.
+And so the answer to this question is just a simple "yes."
+Okay.
+So we've seen many properties of positive semidefinite
+matrices, but the thing that we're gonna have to do
+pretty often is to figure out whether a given
+matrix is positive semidefinite.
+Now technically that means that we have to check if x
+transpose Mx is greater than or equal to zero for all x.
+That's difficult to do because there are infinitely
+many choices for x.
+Is there a simple way?
+Is there some more direct way of checking
+whether a matrix is positive semidefinite?
+And indeed there is.
+There's a very simple condition.
+It's positive semidefinite if it's of the form UU transpose.
+So let's just briefly go over the justification for this.
+So, let's say that M is of this form, UU transpose,
+and U is just any old matrix,
+let's say it's an R by D matrix, okay.
+And let's just go and check all the properties
+for positive semidefinite.
+So first of all, is M even a square matrix?
+Well let's see.
+M is UU transpose.
+U is R by D, so, and U transpose is D by R,
+so M is an R by R matrix.
+Yes, it's square.
+Okay, we're off to a good start.
+Now is M symmetric?
+Okay.
+Let's see.
+Well, UU transpose, what's the transpose of that?
+What is that equal to?
+Well if you remember we had this formula for transpose,
+AB transpose is B transpose, A transpose,
+so if we apply that we get U transpose transpose
+times U transpose.
+What is transpose transpose, well if you just transpose
+a matrix twice, you get back the same matrix,
+so that's just UU transpose.
+And yes, M transpose equals M, so it is symmetric.
+Okay, so just one last property to check, okay.
+So x transpose Mx, we plug in, UU transpose for M.
+And now we have this matrix vector product
+involving four terms,
+we can just parenthesize this however we like.
+So let's do it like this, let's put the parentheses there.
+Okay.
+And let's look at these terms.
+Now, x transpose U.
+By again using this transpose formula, we can just
+write that as U transpose x transposed.
+And now, U transpose x is just a vector,
+and so we get something of the form,
+vector transposed with itself.
+That's familiar, if you remember Z transpose Z
+is just the length of Z squared, okay?
+So U transpose x transposed times U transpose X
+is just the length of U transpose x squared.
+And since it's the squared length, it has to be
+greater than or equal to zero.
+And so a matrix of this form
+has to be positive semidefinite.
+This will turn out to be a very useful rule.
+Now, essentially the same argument can be used
+to show something else that will be useful
+which is that any covariance matrix
+is guaranteed to be positive semidefinite.
+So here's a picture that I would like to leave you with.
+We're talking about square matrices, say D by D matrices.
+Some of these matrices are symmetric,
+that is M equals M transpose.
+This is a special property.
+An even more special case is when the quadratic function
+defined by the matrix,
+x transpose Mx, is always greater than or equal to zero,
+no matter what x you plug in.
+These are the positive semidefinite matrices.
+They arise all the time in machine learning
+and we rely upon them very heavily
+in many different contexts.
+Okay, that's enough for today.
+We've finally seen what it means for a matrix
+to be positive semidefinite,
+and we've already seen one use of these matrices
+in deciding whether a function is convex.
+We'll soon see many more uses.
+See you soon.

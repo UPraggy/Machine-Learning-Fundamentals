@@ -1,0 +1,263 @@
+- So in the beginning of this class,
+we spent a lot of time in classification problems.
+And recently, we've been talking
+quite a bit about regression.
+What we gonna do today is to move on
+to another type of prediction problem.
+Conditional probability estimation.
+So we'll start by looking at sources
+of uncertainty in prediction problems
+and then we'll see how this uncertainty
+can be captured by linear functions
+and eventually this will lead
+to the logistic regression formulation.
+So here's a basic question.
+Suppose you wanna build a classifier
+and let's say you have all the training data
+you could possibly want, okay, as much data as you like.
+Can you, in general, hope to get a perfect classifier.
+The answer, sadly, is in general, no.
+And there are two big reasons for this.
+The first reason is that the features you have,
+the x, may simply not contain enough information
+to perfectly predict y.
+So for example, let's say that the data,
+the x, are medical records for patients
+who are at risk for a certain disease.
+And let's say y is whether the patient
+actually does get that disease over the,
+say next five years.
+So even with all these information,
+even with the complete medical record,
+it's still not possible to predict with complete certainty,
+whether or not somebody is gonna fall sick.
+There's so much that depends on chance.
+So this is a situation which we would like
+to be able to make a prediction, but it would also be useful
+if we could accompany that prediction
+with some sort of quantification of the uncertainty.
+If we could say something like,
+there is an 80% chance that this person will fall sick.
+Now the second big reason, who are in general,
+we can't hope for a perfect classifier,
+is that very often the kind of classifier
+that we are using is simply not capable
+of perfectly capturing the true decision boundary.
+So let's look at this picture over here.
+We have a two-dimensional situation.
+There are two classes, purple and green
+and there is some true decision boundary
+between the two classes.
+So, let's say we are using linear classifiers.
+There's no way to perfectly capture this boundary.
+The best we could do would probably be something like this.
+So, in this case, we would still be able to
+make predictions but it would be nice
+if we could also quantify the uncertainty.
+If we could say something like,
+there is a 70% chance that the label is green.
+So, we're talking about situations
+in which we want to classify, but in addition,
+we also want to output a probability.
+We wanna output the probabilities of the different labels.
+Now, for simplicity, we're gonna be looking
+at the case where there are just two possible labels
+plus and minus, plus one and minus one.
+This is the binary case.
+The methods that we developed,
+the logistic regression method,
+applies also in the multi-class setting
+and we'll see how this generalization works,
+it's very easy, but we won't see it for another week or two.
+So, for the time being, we're looking at binary problems.
+And we have points x and we wanna be able to predict
+the probability that y equals one at x.
+Now, of course, the probability that y equals minus one
+is just one minus this.
+Now, let's see what happens in the picture
+we looked at before.
+And let's say we that we wanna use a linear function.
+So we'd have a boundary like this.
+And along the boundary, there is a 50% chance that y is one.
+Let's say in this case that green is plus one
+and purple is minus one.
+So, along that line, there's a 50% chance, say,
+that y equals one and then we'll look at parallel lines.
+So, along this line the chance would be slightly higher.
+Let's say 60%, and along this line,
+the chance would be slightly lower.
+The probability of y equals one
+might be something like 40% along that line.
+So this is the kind of model that we'll be coming up with.
+We'll have a linear decision boundary.
+On one side of the boundary, we'll predict plus.
+On the other side, we'll predict minus.
+And in terms of the probabilities,
+it really depends on the distance to the boundary.
+The closer to the boundary,
+the closer the probability is to a half.
+Now, let's see how this would work out mathematically.
+So, let me go ahead and draw a two d grid.
+So, let's say we have two dimensions like this.
+This is zero, one, two, three, four, five.
+And along the x, so this is the x one direction
+and then we have the x two direction
+and along this direction,
+we have one, two, three, four and five.
+So, we have two-dimensional data.
+And let me draw a linear boundary.
+What about this boundary over here.
+What is the equation of this line?
+Well, let's see, the equation of the line
+is basically x one plus x two equals two.
+That's the equation of that line over there.
+Let's write it in a slightly different way.
+Let's write is as x one plus x two minus two equals zero.
+And in general, we're gonna be writing
+our linear boundaries like this,
+as some linear function equals zero.
+So, this is the linear function in our case.
+And the boundary is when this linear function equals zero.
+Now, on one side of the boundary, we'll predict plus.
+On the other side of the boundary, we'll predict minus.
+What is the set of points along which we are gonna predict,
+say, a 60% chance of plus.
+It might be something like this.
+What is the equation of that line?
+We'll, let's see.
+That line is x one plus x two equals three.
+And another way to write it
+is that x one plus x two minus two,
+which is our linear function, equals one.
+And now, let's look at a line on the other side.
+Maybe something like this.
+If these are the 50% points, where there is a 50, 50 chance
+of the two labels, and these are the 60% points,
+where the probability of y equals one is 60%,
+then the symmetric line on the other side
+will be the 40% points, where the probability
+that y equals one is 40% and conversely,
+the probability that y equals minus one is 60%.
+And what's the equation of this line?
+Well, this is x one plus x two minus two
+equals negative one.
+So, do you see the general pattern over here.
+In order to classify a point and in order to determine
+the probability that y equals one,
+all we're gonna do is to compute this linear function.
+In this case, x one plus x two minus two.
+If it works out to zero, there's a 50, 50 chance.
+If it's positive, then the chance is greater than half.
+If it's negative, the chance is less than a half.
+And the larger this value, the larger the probability
+that y equals one.
+So, now let's move to a more general setting,
+where we have d dimensional data.
+And again, we're gonna be computing
+some linear function of this data.
+So, we have data points x in rd.
+What is a general linear function in d dimensions?
+Well, it's something of this form.
+W one x one plus w two x two, all the way to wdxd
+plus this extra intercept term b.
+So, this is a general linear function.
+And we can rewrite it a little bit more compactly
+as w dot x plus b, where w is just a vector
+of the coefficients, w one through wd.
+So, that's our linear function.
+So, we get a point x, we compute this linear function.
+If it turns out to zero, that means that this point
+is right on the boundary between the two classes.
+There's a 50, 50 chance that y equals one.
+And the larger this function is,
+the larger the probability that y equals one.
+But how do we get an actual probability out of this?
+After all, this function, w dot x plus b,
+this returns an arbitrary real value,
+it could be anywhere from minus infinity to plus infinity.
+How do we convert this into a probability?
+How do we take a number from minus infinity to plus infinity
+and get a number in the range zero to one?
+The way we do that, is by using the squashing function.
+So, the squashing function takes a real value, z
+and it outputs one over one plus e to the minus z.
+And this is something that's always
+in the range zero to one.
+So, in this graph, this is the z over here
+and on this axis, you had s at z.
+So, when you plug in z equals zero, for instance,
+into that formula, you get back a half.
+So, you get that point over there.
+And as z gets larger, the numbers get larger as well.
+And as z goes to infinity, they asymptotically reach one.
+That's what you're seeing up here.
+And when z goes to negative infinity,
+they asymptotically reach zero.
+So, this takes a real number,
+turns it into a probability and when you plug in
+the value zero, you get a half.
+So, this is really exactly what we need.
+So, when we have a point x, the probability
+that y equals one is gonna be the following.
+First, we compute the linear function, w dot x plus b.
+And then, we put it through the squashing function.
+And this gives us a probability in the range zero to one.
+Now, this is the probability that y equals one,
+for that specific point x.
+What is the probability that y equals minus one?
+Well, let's just one minus this.
+So, let's write that down.
+The probability that y equals minus one
+is one minus whatever we have up there,
+which at one minus one over one plus e
+to the negative w dot x plus b.
+Let's simplify it a little bit.
+So, we get e to the negative w dot x plus b
+over one plus e to the negative w dot x plus b.
+And you know what, let's multiply the numerator
+and denominator by exactly the same quantity,
+which is e to the w dot x plus b.
+So, let's multiply top and bottom by the same thing.
+And what do we get?
+Well, the top just becomes one
+and the bottom becomes one plus e to the w dot x plus b.
+So, we've simplified it a little bit.
+But now, if you look at the two formulas,
+so the one at the bottom is the probability
+that y equals minus one, given x.
+If you look at this formula,
+and you look at the one up there,
+you see that they're actually very similar.
+And in fact, we can put them together
+and just have a single, unified formula.
+What is that?
+It's the following.
+The probability of any y given x,
+where y's either plus one or minus one,
+is simply one over one plus e to the negative y
+times w dot x plus b.
+So, if you plug in y equals one,
+you get the formula on the top.
+If you plug in y equals negative one,
+you get this formula over here
+and so now, we have a single formula
+that covers both cases.
+This is the logistic regression model.
+So, here's a summary of what we have.
+We have data in d dimensional space.
+There are two possible labels
+and in addition to classifying,
+we're gonna up with probabilities
+and this is the form of the probability function.
+Now, it's based on two parameters,
+w and b, that define a linear function.
+What are these parameters?
+How do we set them?
+Well, this is what we have to learn
+from data and we'll see how to do that next time.
+So, that's it for today.
+We've talked a little bit about quantifying
+the uncertainty in prediction and we have seen
+that this can be done quite easily using linear functions.
+Next time, we'll see how to learn this linear function.
+So see you then.

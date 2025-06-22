@@ -1,0 +1,193 @@
+- A lot of machine learning is about
+minimizing loss functions and the way you
+do that depends in part upon whether the function is convex.
+Today we'll see how we can check that.
+So we'll review the second-derivative test for convexity,
+and then we'll go through a whole slew of examples.
+We've already seen what it means for
+a function to be convex:
+when we have a function of d variables,
+it's convex if its second-derivative matrix
+which is a d by d matrix, is
+positive semi-definite at all points.
+And so what exactly does this mean?
+So at any given point, the second-derivative matrix
+is a d by d matrix.
+It's positive semi-definite, a matrix H
+is positive semi-definite
+if the quadratic function defined by the matrix
+x transpose H x is always greater than or equal to zero,
+no matter what x you plug in.
+We also saw an alternative characterization
+of positive semi-definite matrices
+that is somewhat easier to use in many situations.
+Okay, so a matrix is positive semi-definite
+if it can be written in the form u u transpose,
+where u is any old matrix.
+Okay so we'll be making use of both of those definitions.
+So let's look at an example.
+This function If of x equals the length of x squared.
+Is it convex?
+Well the first step is to compute
+its second-derivative matrix, the Hessian.
+And we actually did that last time
+and this turned out to be twice the identity matrix.
+Is that positive semi-definite?
+Well let's see.
+What is z transposed times twice the identity, times z?
+Well we can pull the two out, and we get z
+transposed times the identity times z.
+The identity times z is just z.
+So this is twice z transpose z which is twice the length
+of z squared which is greater than or equal to zero.
+So this is positive semi-definite.
+Another way to see it is that matrix twice the identity
+is a diagonal matrix and all the entries along
+the diagonal are positive, so the matrix is
+positive semi-definite.
+Good. So f is a convex function, it looks like a bowl.
+And in fact it's the high-dimensional analog
+of our classical convex function,
+y equals x squared.
+This is the d dimensional version of exactly the same thing.
+Let's do another example, okay?
+So here u is any fixed vector in d dimensional space
+and we define a function f of z,
+so z has d variables,
+z one to z d.
+And f is simply the dot product we've used, squared.
+So it's u one, z one, plus u two, z two
+all the way to u d, z d squared.
+Is this a convex function?
+Well, let's start by computing the second derivative, okay?
+So first, what is d f, d c ?
+What is the first derivative with respect to z sub j?
+When we have something of the form, something squared,
+we first pull down the two, then we copy
+down the whole expression.
+And then we take the derivative of the inside part
+with respect to z j and that's just u j.
+Okay, so that's the first derivative with respect to z j.
+And now let's take the second derivative,
+with respect to z sub k of this thing.
+Okay? So we're going to start with this
+and now we're going to take the derivative
+with respect to z sub k.
+Now, in this whole expression there's only one term
+that involves z sub k, okay?
+And that's the term with u k, z k.
+So the second derivative is just two
+u j, u k.
+So, the second derivative matrix is a d by d matrix,
+whose j k entry is twice
+u j, u k.
+One concise way of writing this
+is to say that the Hessian at point c
+is twice u u transpose.
+So do you remember this?
+If you have a vector, u then u u transpose
+is a d by d matrix whose i j entry is u i, u j.
+So that's exactly what we need in this case.
+So is this positive semi-definite?
+Well, u u transpose is positive semi-definite,
+it has that special form that immediately identifies as
+being of this type, and when we multiply it
+by two, it remains positive semi-definite.
+Okay? So this p s d, and so this function,
+is indeed convex.
+Okay, those were warm-ups, let's move on
+to a somewhat more challenging example.
+So this if you will recall was our
+loss function for least-squares regression.
+So we have a set of data points, n data points
+x i, x j, where the xs are vectors in d dimensional space
+and the ys are the response values, real values.
+And we want to find a linear function given by w
+that minimizes the squared error.
+Now, normally we would also have an
+intercept term in here, a plus b.
+But, if you recall, we had a way of assimilating
+that into w, so you can imagine that we've already done that
+and that this is the function we now want to minimize.
+Is this a convex function?
+Well let's start by computing the second derivative
+and on route to that, the first derivative.
+Okay, so our function over here
+is the sum over i of y I
+minus w dot x i,
+that is w one, x i one,
+all the way to w d,
+x i d, squared.
+Okay, so the derivative with respect to w sub j.
+Well the derivative of the sum is the sum of the derivative.
+So, we can just pull the summation out.
+Then we have something of the form u squared,
+the derivative of that is two u d u
+so we bring down the two and we have
+y i minus this whole thing over here, w one
+x i one, all the way to w d,
+x i d, okay?
+And now we take a derivative of just that
+inside part with respect to w j.
+So we get negative, x i j.
+Okay? That's the first derivative.
+Let's pull the minus two in front, just for convenience.
+Okay, so we get something like this.
+w d,
+x i d,
+x i j.
+Okay, now let's take the derivative
+with respect to w sub k.
+So we take this expression and we take
+the derivative of that with respect to w sub k,
+so that's the second derivative.
+And what do we get?
+Well for the term in the middle, there's only
+one term that involves w sub k.
+So we get negative
+x i k,
+x i j, okay?
+And so the negatives cancel out
+and if we just copy this over,
+what we have is the d squared l
+with respect to w k, w j,
+is twice the summation over i.
+Let's see what we had, x i j and x i k.
+So the jth coordinate of the ith data point
+and the kth coordinate of the ith data point.
+Okay so this is the second derivative,
+or at least one term of the second-derivative matrix.
+What's the entire matrix?
+Well this is again something of that
+special form, u u transpose.
+So if you remember you have that vector u,
+u u transpose is a d by d matrix
+whose i j entry is u i, u j, okay?
+So this entire matrix over here,
+the Hessian and w is twice times the sum over i,
+equals one to n, of the ith data point,
+ith data point transposed.
+Okay, this is a d by d matrix over here.
+So that's the Hessian, is this positive semi-definite?
+Well this particular term here does have
+that u u transposed form,
+so this is positive semi-definite.
+Okay?
+And we've already seen that if you have the sum
+of positive semi-definite matrices,
+that's also positive semi-definite.
+So this is also positive semi-definite.
+And we've seen that multiplying a positive semi-definite
+matrix by a positive constant,
+again leaves you with something positive semi-definite.
+So the whole thing is positive semi-definite
+and that means that this is a convex function.
+Okay?
+And this is one of the many reasons
+why we like the least-squares loss function so much.
+Okay well that's it for today.
+I think we have convexity under control now
+and in fact we have all the tools we need
+to get started on our next set
+of classification methods.
+See you soon.

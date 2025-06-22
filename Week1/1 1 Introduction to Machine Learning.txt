@@ -1,0 +1,85 @@
+- Welcome to DSE 220X: Fundamentals of Machine Learning.
+In this course, you will get an intensive grounding
+in building models from data and using these models
+to make predictions.
+We'll cover the most widely used machine learning methods,
+logistic regression, support vector machines,
+kernel methods, principal component analysis,
+random forests, neural nets, and so on.
+We'll see applications of these methods
+to problems in image understanding,
+sentiment analysis, language processing,
+personality testing, and many other domains.
+Most of all, we'll really delve into the fundamentals
+of these methods.
+We won't think of them as recipes to be blindly followed,
+but rather as interesting approaches that,
+once understood,
+are amenable to all kinds of modifications and improvements.
+So in order to get to this level of understanding,
+we will go into the mathematical foundations
+of machine learning.
+There are basically three types of math that we will need:
+probability, linear algebra, and optimization.
+We'll develop all three of these areas quite carefully,
+because they're really crucial to a mastery
+of machine learning.
+So at the end of the day, what are the skills
+that you will acquire from this course?
+First, a comfortable familiarity
+with the most widely-used machine learning methods.
+What are they?
+How do they work?
+Why do they work?
+What kinds of data are they good for?
+What are their strengths and weaknesses?
+What is going on under the hood?
+This will help you assess which method or methods
+are most suitable for a particular problem.
+It will also help you understand and interpret
+the results that you're getting.
+The second skill that you'll get from this course
+is the ability to take existing methods
+and adapt them for a particular application.
+Sometimes, it's okay to just use an off-the-shelf method,
+but very often, this gets a level of performance
+that is not quite what you were hoping for,
+and in order to get to the next level,
+what you need is to do something customized.
+To either build upon an existing method
+and modify it in some way,
+or perhaps to transform the data.
+What are effective ways of doing this?
+Last, but not least, this course
+will give a sufficiently thorough grounding
+in the foundations of machine learning
+that will help you to keep up with this field
+that is really evolving very rapidly.
+Now for each of the methods that we study,
+you'll get a Jupiter notebook or two
+that contains code and visualizations
+that illustrate the method on some suitable data sets.
+You can take these and play around with them
+to really get a feel for how these methods work.
+There will also be programming projects
+that will give you the opportunity
+to think outside the box a little bit
+and to creatively build upon existing methods
+to solve new problems.
+At the end of the course,
+this collection of projects will essentially constitute
+a sort of repertoire, a portfolio,
+of self-contained notebooks that you can show other people.
+You know, to impress your friends, for example.
+Okay, so that's a little bit of an overview of the course.
+Let me also tell you a little bit about myself.
+I'm a professor here,
+at the University of California-San Diego,
+and I've been here for about 15 years or so.
+The things I work on are machine learning and algorithms.
+These are the two areas that I care the most about.
+And this particular course, DSE 220X,
+is closely modeled on a class that I teach here,
+and that basically, I wanted to open up
+to a much broader audience.
+So I hope you like it.

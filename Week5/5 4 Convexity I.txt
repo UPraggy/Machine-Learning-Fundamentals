@@ -1,0 +1,216 @@
+- As we have seen,
+learning often boils down to optimization.
+We define a suitable loss function,
+and then we learn parameters by minimizing that function.
+Now, some loss functions are
+much better behaved that others
+and permit a wide variety of different solution methods.
+So it's important to be able to
+identify these special cases.
+The loss functions that are the best behaved of all
+are those that are convex.
+This is a concept that we have been
+skirting around for a little while,
+and today, we'll finally get to focus on it.
+So we'll begin by defining
+the notion of convexity.
+And then we'll see that establishing convexity
+often boils down to looking at second derivatives.
+So this is the general situation we're in.
+We have some loss function for our learning problem,
+which is basically an equation, a formula of some sort.
+And we want to know,
+does it look like the picture on the left,
+or does it look like the picture on the right?
+Does it have a whole bunch of local optima
+that we could get trapped in
+and that are ultimately gonna become
+the focus of the optimization?
+Or, is it a much nicer situation like the one on the right,
+which is gonna be a lot easier to optimize
+and will permit us to use a wide range of methods?
+So to start with, what is the formal property
+that makes the picture on the right so nice?
+It's called convexity.
+Let's take a look.
+So, what does it mean for a function to be convex?
+Here's what it means.
+Take any two points, a and b,
+here's a and here's b,
+and look at the value of the function at these points.
+So f of a and f of b
+and now, draw a line between them,
+so we have this green line over here.
+What we need is that between a and b,
+the function should lie underneath that line,
+which is exactly what is happening here.
+The function lies entirely underneath that line.
+Okay?
+So, for instance, if we were to look at
+this point over here,
+that point may be 2/3 a plus 1/3 b,
+the value of the function at that point
+is f of 2/3 a plus 1/3 b,
+so that's this value over here.
+And the value of the line at that point,
+this value over here is
+2/3 f of a
+plus 1/3 f of b.
+Now, from the picture, we can see
+that that left-hand side is less than the right-hand side.
+The curve lies under the line,
+and we need this to be true not just for 2/3 and 1/3,
+but for every point between a and b.
+So, in this definition of convexity,
+that's the role played by theta.
+Theta is a fraction that goes from zero to one,
+and as theta goes from zero to one,
+we get all the points that lie between a and b,
+and for every single one of these points,
+we need the curve for f to lie underneath that line.
+Now, the canonical example of a convex function is perhaps
+y equal to x squared, it looks like this.
+Sometimes, we are also interested in
+functions that look like upside-down bowls,
+like y equals negative x squared,
+that looks like this.
+That's called a concave function.
+And in general, we say a function is concave
+if negative of that function is convex,
+as we see in this particular example.
+Okay, so we have the definition of convexity.
+How do we check if a given function is convex?
+So, this is particularly easy
+if the function has just one variable.
+So, if we have a function from R to R,
+so a function of just one variable,
+a quick check for convexity is
+to compute the second derivative.
+And if it turns out that the second derivative
+is always greater than or equal to zero,
+it means that the function is convex.
+So let's look at this example here.
+Let's look at f of z equals z squared.
+We know this function is convex.
+Let's see how this text works out.
+So what's the first derivative?
+Df, dz is two z.
+So that's the first derivative.
+The second derivative,
+d squared f, dz squared is two.
+Okay, and that's greater than zero,
+so the test really does work in this example.
+So it's a nice simple test.
+But the loss functions that we'll typically be dealing with
+are not functions of just one variable.
+What does one do when one has
+a function of multiple variables?
+How does one check convexity in those cases?
+So here is the big picture that's useful to bear in mind.
+When you have a function of just one variable,
+which is the case over here,
+then the value of function at any point is a number,
+and the derivative of the function
+at any given point is a number,
+and the second derivative
+at any given point is a number,
+and the function is convex if that second derivative
+is always greater than or equal to zero.
+Now let's say you have a function of d variables.
+In that case, the value of the function
+at any given point is again a number,
+but the first derivative at any point
+is now a d-dimensional vector,
+and the second derivative at any point
+is a d by d matrix.
+This function is convex if
+this second derivative matrix
+is always positive semidefinite.
+So what does all of this mean?
+To start with, why is the second derivative
+a d by d square matrix?
+Let's take a look.
+So we have some function on d variables,
+so it's a function that maps d-dimensional vectors
+to just some number.
+Now, we've already talked about the first derivative.
+We do have a function like this with d variables,
+then there are d things,
+with respect to which you can take the derivative.
+So a derivative with respect to the first variable,
+the second variable, all the way to the d variable.
+So you can compute each of these individual derivatives
+and then package them into a vector.
+And that's why the first derivative
+is a d-dimensional vector.
+What about the second derivative?
+So now, we're taking the derivative twice,
+and for the first time around,
+we have a choice of d variables.
+And for the second time,
+we again have a choice of d variables.
+So there's a total of d squared options,
+and we write them together in a d by d matrix,
+and this matrix is called the Hessian.
+So it's a d by d matrix, where the jk entry of the matrix
+is the second derivative with respect to
+the jth variable and kth variable.
+So the matrix looks something like this.
+It's a d by d matrix, and the first entry is
+the second derivative of f
+with respect to z one squared.
+The second entry is the derivative
+with respect to z one and then z two.
+And then, the second derivative
+with respect to z one and then z three, and so on.
+And, on the next row, the first entry is
+with respect to z two and then z one,
+and then the diagonal entry is z two squared, and so on.
+So for a function of d variables,
+the second derivative is actually a matrix,
+a d by d matrix.
+Okay, so let's work this out in a specific example.
+Here, we have a function of d variables,
+so let's just right it out in full
+a function of z one to z d,
+and the function is just the length of z squared.
+So it's z one squared plus z two squared
+plus all the way to z d squared.
+Let's compute the second derivatives of this function.
+So first, the derivative with respect to zj.
+Well, zj is only in one of those terms, zj squared,
+so the first derivative is two zj.
+Now, let's compute the second derivative
+with respect to zk and then zj.
+So we take this thing over here,
+and now, we're gonna compute its derivative
+with respect to zk.
+So what if k equals j, then the derivative is two.
+And if j is not equal to k,
+then the derivative is zero.
+So the second derivative matrix, in this case,
+is a diagonal matrix.
+So the second derivative matrix
+at a point z looks like this.
+Along the diagonals, it has twos,
+and everywhere else, it's zero.
+So a concise way of writing this
+is to say that it's twice the identity matrix.
+Okay, we now we know
+what the second derivative matrices are.
+Let's go back to our overall picture.
+So, we're dealing with functions of d variables.
+The value of the function is a number,
+the derivative is a vector,
+the second derivative is a matrix,
+and function is convex if the second derivative matrix
+is positive semidefinite.
+What does that mean?
+That sounds mysterious.
+Well, it turns out, it's a very important concept
+in machine learning,
+and it's what we'll turn to next.
+But we've done quite a bit for today,
+so let's take a break now, and when we meet next,
+we'll talk all about positive semidefinite matrices.
+See you then.

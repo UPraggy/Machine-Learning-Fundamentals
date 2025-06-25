@@ -1,0 +1,290 @@
+- Today, we'll study a fantastically
+competent linear classifier.
+It is called the support vector machine.
+So we'll begin about talk about the margin
+of a linear classifier,
+and then we'll formulate the problem
+of finding the linear classifier
+that has the largest margin possible.
+This will turn out to be a convex optimization problem,
+which means that it's actually pretty easy to solve.
+And it'll turn out that the solution
+has a unique property.
+It only depends on a view of the training points,
+which we call support vectors.
+And this is why the method overall
+is called a support vector machine.
+Okay, when we were talking about the Perceptron algorithm,
+we mentioned that there is this convergence theorem
+which says that if a data set is linearly separable,
+then the Perceptron algorithm, those four lines of code,
+are guaranteed to find a linear classifier
+that perfectly separates the training set.
+So in this picture, for example, it'll return something
+that could be one of these lines, or maybe this one,
+or maybe this one, something like that.
+But what if we want the linear classifier
+that is the most central?
+Maybe something like this.
+The classifier that has the most buffer
+around it, for example.
+How would we even formulate that?
+What does that mean?
+So let's take a closer look.
+Okay, so the setting is that we have
+training data, say n points, x one through xn.
+These are some d dimensional vectors.
+And we're looking at binary classification.
+So each point has its label y,
+which is either plus one or minus one.
+Now, we want to find a linear classifier.
+So we want to find w and b
+that perfectly classifies this data.
+Okay, so if y is plus one, w dot x plus b
+should be positive.
+If y is minus one, w dot x plus b should be negative.
+And last time we saw that a concise way to write this
+is to simply say that y times w dot x plus b
+should be greater than zero.
+Either they're both greater than zero
+or they're both less than zero.
+Okay, and we want this condition to hold
+for every one of the n training points.
+Now, in order to start talking about margins,
+what we're going to do is to take this condition
+and reformulate it just a tiny bit.
+We'll write it like this.
+Instead of asking that y times y dot x plus b
+be greater than zero, we'll ask that it be
+greater than or equal to one.
+Okay, why can we do this?
+It seems like a stronger condition.
+Certainly if y times w dot x plus b
+is greater than or equal to one,
+then it's greater than zero.
+So it certainly implies that.
+But it seems like it's something more.
+It seems like it's requiring more.
+And it's actually not.
+If you can solve this,
+if you can find w and b that solve that,
+you can also find w and b that solve this.
+And let me explain why.
+So let's say you manage to find a w and b
+such that for all the training points,
+y times w dot x plus b is greater than zero.
+So let's look at what these values actually are.
+Maybe for the first training point is 3.2.
+Something greater than zero.
+Maybe for the next training point it's 1.6.
+Maybe for the next one it's 0.1.
+Maybe for the next one it's 2.3.
+And all the way to the nth point maybe it's 1.0.
+So we have these n different numbers.
+And they're all greater than zero.
+Let's look at the smallest of them.
+Let's say it's this one and let's call it epsilon.
+Now, if we take w and b and we multiply them
+by one over epsilon, we just scale them up
+by a factor of one over epsilon,
+then w dot x plus b also gets magnified
+by one over epsilon.
+In this case, by 10.
+So the first number will become 32.
+And the next number will become 16.
+And the next number will become one.
+And the last one will become 10.
+And in this way, all the numbers become
+greater than or equal to one.
+So if you can find w and b
+such that y times w times x plus b
+is greater than zero, then by simply scaling up
+w and b, you can get the second condition as well.
+You can make all of these values
+be greater than or equal to one.
+So this is the condition we'll be working with.
+This will be our linear separability condition.
+Okay, that makes sense, but why did we actually do this?
+How did this help us to rewrite our condition
+in this way?
+Well, it will turn out that if we write
+our separability condition in this way,
+it's very easy to come up with a nice formula
+for the margin.
+And let's see what that is.
+Okay, so now we're gonna have some decision boundary,
+w dot x plus b equals zero.
+And that's the thick green line in the middle.
+What is w dot x plus b equal to one?
+That is a parallel hyperplane.
+And it's shown by the dotted line over there.
+And what's w dot x plus b equals minus one?
+That's another parallel hyperplane on the other side.
+So, in this condition over here,
+in our separability condition, what we're insisting
+is that all the positive points, in this case,
+the blue triangles, have to be to the right
+of the right hyperplane.
+And all the negative points, in this case the red circles,
+have to be to the left of the left hyperplane.
+Okay, so not only do they have to be
+on the correct side of the boundary,
+but also there should not be any points
+in that middle buffer zone.
+And the margin is the width of the buffer zone
+for which I'm using the great letter gamma.
+That's the margin.
+And that's the thing we want to maximize.
+Now, it turns out that there's a simple formula
+for the margin.
+The margin is simply one over the length of w.
+Why is that?
+Well, you can just take my word for it.
+It's just a simple geometric argument.
+You don't need to know what it is.
+In case you're curious,
+I'll just give you a quick hint.
+So, let's look at our right hyperplane
+and look at any point z on it.
+So the point lies on the hyperplane.
+So we know w dot z plus b equals one.
+Now, we also know that if we move gamma units
+in this direction, we land on the decision boundary.
+What is this point over here?
+What is this point gamma units in that direction?
+Well, it's z
+minus gamma in the direction of w.
+Okay.
+Actually, w might not be a unit vector.
+So we have to normalize it to make it a unit vector.
+And if we do that, then we end up with that point.
+Now, since that point lies on the decision boundary,
+we know that w dot that point
+plus b equals zero.
+And when we solve these two equations,
+we get our formula for the margin.
+Okay.
+At any rate, we now know what the margin is.
+It's one over the length of w.
+And since we want to maximize the margin,
+what we need to do is to simply minimize
+the length of w.
+So, this is the optimization problem
+we want to solve.
+We have our n data points.
+We want to perfectly classify all of them.
+That's this condition over here.
+And while perfectly classifying those points,
+we also want to maximize the margin.
+So we want to minimize the length of w
+or equivalently minimize the length of w squared.
+So this is an optimization problem that we want to solve
+in which the things we are solving for
+are w and b.
+So how do we solve this problem?
+Well, the nice thing is that this turns out
+to be a convex optimization problem.
+Now, soon, maybe in a couple of lectures,
+we'll define exactly what this means.
+But for the time being, the reason it's a convex
+optimization problem is the thing we're
+minimizing is convex.
+We know the length of w squared is convex.
+That's one of the examples we saw.
+And all the constraints are linear functions
+of w and b.
+So when you have a convex thing
+that you are minimizing all the constraints are linear,
+that's a convex optimization problem.
+And it means that it's pretty easy to solve.
+You can just hand this over
+to some standard package and it'll give you back the answer.
+Now, there's a second benefit of convex optimization,
+which is not only can you solve the problem efficiently,
+but you can use the theory of duality
+to also tell you a little bit about
+what the answer looks like.
+And this also, I'm sure, sounds somewhat mysterious.
+And it's also something we'll talk
+a little bit more about later on.
+But let me tell you what duality theory tells us.
+It tells us that the solution is of a particular form.
+The solution looks like this.
+It is the sum over all data points of the data point
+times its label, which is plus one or minus one,
+times some coefficient, which is greater than
+or equal to zero.
+So for each data point, there's some coefficient
+alphas of i, and the solution w, the optimal w,
+is just a linear function of this form.
+Alpha i times the label plus one minus one times xi.
+Now, the remarkable thing is that
+most of these alpha is may well be zero.
+The only alpha is that are going to be nonzero
+are for the point, the data points that lie
+exactly on the margin.
+In this data set, there's just four of them.
+These are called the support vectors.
+For all the other points, the coefficients alpha i
+will be zero.
+So in this case, in this example, w will be a function
+just of the four support vectors,
+the four data points that I've circled.
+Okay, so you could have a data set of a million points.
+But if there's just 100 of them that lie
+on those margins, then the final answer
+is a function just of those 100 points.
+Okay, let's see a quick example of the svm at work.
+And this is a very famous data set called the iris data.
+So it consists of measurements of 150 flowers
+which are all irises of three different types.
+There's iris setosa, iris versicolor,
+and iris virginica.
+There's 50 of each of them.
+So 150 points total.
+And for each flower, four measurements were taken.
+The pedal length and width.
+And the sepal length and width.
+And the goal is to take these four measurements
+and predict which of the three types of iris it comes from.
+So here's a plot of the data.
+Since we're doing binary classification,
+I just pulled out two of the three classes.
+So I pulled out setosa and versicolor.
+The setosa are shown by red circles.
+Versicolor are shown by black triangles.
+These are the two classes.
+And for visualization purposes,
+although there are four features,
+I just pulled out two of them.
+Okay, so we'll just use two of the features.
+The widths of the sepals and pedals.
+So you can see the data set.
+Is it linearly separable?
+It certainly is.
+So if we were to use the Perceptron algorithm,
+it would indeed find a classifier
+that was perfect on the training set.
+But let's see what the svm does.
+This is what it returns.
+A very nice linear classifier,
+the one right in the middle.
+So this linear classifier depends
+on just these three training points.
+It's a function of just those three support vectors.
+And the margin is this distance over here, this gamma.
+And this is the largest margin possible
+on this data set.
+So a very competent linear classifier indeed.
+Okay, well, that's it for today.
+We've got our first glimpse
+of the support vector machine.
+And what we did today was to focus on the case
+where the data is linearly separable.
+Now, in practice, this is usually not the case,
+or at least fairly often not the case.
+So what we'll do next time is to look
+at the case of arbitrary data.
+And it'll turn out that this same methodology
+extends very easily to that more general setting.
+So, see you next time.

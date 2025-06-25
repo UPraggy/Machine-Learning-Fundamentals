@@ -1,0 +1,194 @@
+- We have seen some beautiful and powerful
+linear classification methods, the Perceptron Algorithm
+and two forms of the support vector machine.
+It turns out that you can actually do much more with them,
+go beyond just linear boundaries to boundaries that are
+quadratic or polynomial or even more general.
+The first step in doing this is to look at these algorithms
+in a slightly different way, to look at their dual form.
+So this might sound a little bit mysterious
+and we'll try to shed as much light on this as possible.
+What we'll see is that the Perceptron
+and the two forms of the support vector machine
+can be expressed in a slightly different way
+that is also very intuitive.
+Let's start with the Perceptron.
+So here's the algorithm.
+The setup is that we have training points, Xi, Yi.
+The Xs are vectors in, say, some D dimensional space.
+The Ys are the labels, plus one or minus one.
+Now we're gonna learn a linear classifier given by W and B,
+and the way we're gonna do this is just by cycling through
+the data set, and each time we come to a point on which
+we are wrong, each time we come to some point X, Y
+that are misclassified by the current W and B,
+we do a simple update.
+We just add YX to W
+and we add Y to B.
+That's it, just four lines of code total.
+Now what this means is that the final answer W
+is of a very simple form.
+Here it is.
+The final answer is just the sum over all data points
+of Yi, Xi, times the number of times we updated
+of Yi, Xi, times the number of times we updated
+on that data point.
+So it's interesting because it means that we can represent
+the final answer as the vector W or alternatively,
+equivalently, we can represent the final answer
+just by providing these coefficients alpha one to alpha N.
+So alpha I is just the number of times we updated on point I
+So we never updated on that point,
+which might be the case for many of the data points,
+then it would take on a value of zero.
+If we updated just once on it,
+it would take on a value of one.
+If we updated it twice, it would take on a value of two
+and so on.
+So alphas of I is a non-negative integer,
+and if we just take this vector alpha,
+which gives us these update counts for each of the
+end data points, we can recover W using this formula here.
+So there are two ways to represent the answer,
+either as the vector W, which as dimension D,
+or as this vector of counts, alpha, that has dimension N.
+We will call this the dual form of the solution.
+The original, primal form of the solution is W
+and the dual form is alpha.
+Okay, now we can take this one step further
+by rewriting the entire algorithm
+just in terms of the alphas.
+Let's see what we get.
+So on top we have the original form
+of the Perceptron algorithm, which is the primal form,
+the same thing we saw before.
+Let's look at the dual form.
+So here, we initialize the alphas to zeros.
+So alpha is a vector with end entries,
+we initialize it to zero because we haven't updated
+on any of the points yet.
+Then we start cycling through the points,
+and each time we come to some point Xi, Yi
+that we've misclassified, it means we're gonna update
+on that point, so we simply increment alphas of I.
+We're doing one more update on that point.
+That's it, and we make the same change to B as before.
+Now at any given point, the corresponding W is just given
+by this formula,
+but we have now a different form of the algorithm
+that works entirely with the alphas
+and in some ways it's simpler than the original
+Perceptron algorithm.
+At each step, we aren't adding a vector to W,
+we are just incrementing a single count.
+So these are two ways of looking at exactly the same
+algorithm, and the same solution can be represented
+in these two ways, as W or as alpha.
+Now let's move onto the support vector machine.
+If you remember, we had two forms of SVM.
+We have the hard-margin SVM, which enforces all constraints
+strongly and works only if the data is linearly separable.
+Then we have the version that's more commonly used
+in practice, the soft-margin SVM.
+So let's start with the hard-margin case.
+We have training data and we solve for a linear classifier
+given by W and B via a convex program.
+So this program has a linear constraint for each data point.
+We insist that that data point be correctly classified,
+and subject to all those constraints,
+we also wanna maximize the margin,
+which we've seen is the same as minimizing the length of W.
+So this the specification of an optimization problem.
+It doesn't tell us how to solve the problem,
+but it turns out that this is a nice problem.
+It's a convex optimization problem,
+and that means automatically that it can be solved
+efficiently.
+We don't really have to worry too much
+about how that's done.
+We're just gonna hand it over to a package
+and it will give us the answer.
+It doesn't matter what exactly the algorithm is,
+we don't have to worry about it.
+So where does the dual come in?
+Well, it turns out that every optimization problem
+has a dual optimization problem.
+So this particular problem, for example,
+which is a minimization problem,
+so the primal problem is a minimization,
+it has a dual problem that is a maximization problem.
+These two optimization problems have exactly the same
+optimal value.
+Okay, so what is this dual problem?
+Here it is.
+This is the original primal problem that we just solved
+and this is the dual.
+What exactly is this doing?
+Well, it now has a different set of variables.
+It's not solving for W and B, it's solving for alphas,
+alpha one through alpha N,
+and these are the same alphas that we saw in the case
+of the Perceptron.
+So this is solving the problem in alpha space.
+Once again, once we solve the problem,
+the solution we want, the W, will turn out to have
+the same form as it did with the Perceptron.
+The sum of data points where the coefficient of each point
+is alpha I.
+So there two things to mention over here.
+The first thing is that the primal problem we said
+was a nice problem, a convex minimization problem.
+The dual problem is also nice.
+It's a concave maximization problem.
+It's also one of these problems
+that can be solved efficiently.
+It might be a little hard to figure out exactly
+what it's doing, but there's this beautiful theory
+called Complementary Slackness that tells us
+the relationship between the primal solution
+and the dual solution, and what it tells us in this case
+is that in terms of the alphas,
+the only points on which alpha is non-zero
+are the points that lie exactly on the margin.
+This is where the notion of support vector comes from.
+Duality gives it to us.
+Duality is what tells us that the solution W
+depends only on the support vectors,
+the points that lie exactly on the margin.
+Okay, so let's move on to the soft-margin SVM.
+So this is rather like the hard-margin problem,
+except that we also have these slack variables.
+We are no longer in a situation where the data
+is necessarily linearly separable.
+So instead of having hard consraints,
+that every point has to be perfectly classified,
+we allow some of these constraints to be violated
+and these slack variables, signs of I,
+capture the extent of the violation.
+So this is the primal problem, and we saw it last time,
+and once again we can write down a dual problem.
+The dual, in fact, looks a whole lot like the dual
+for the hard-margin SVM.
+The solution, again, gives us these coefficients alpha,
+where the W we want is just given by a linear combination
+of the data points with these coefficients alpha.
+Now when we use Complementary Slackness,
+we find that in this case,
+there are actually two kinds of support vectors.
+There are two kinds of points on which alpha is non-zero.
+There are the points that lie exactly on the margin,
+and then there are points on which we've used slack.
+So there are two kinds of support vectors,
+and again it is this beautiful theory of duality
+that gives us this surprising insight.
+So that's it for today.
+We have got just a very small glimpse of duality.
+Duality is central to optimization,
+and as you go further and further into machine learning,
+it's a concept that you're gonna bump into again and again.
+For our purposes, we've seen just enough of it
+to give us what we need to take Perceptron
+and support vector machine to the next level
+to use them not just for linear boundaries,
+but for polynomial and beyond.
+See you next time.

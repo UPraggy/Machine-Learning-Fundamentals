@@ -1,0 +1,289 @@
+- We have recently seen some beautiful methods for linear
+classification.
+Logistic regression, the proceptron algorithm,
+and support vector machines.
+But we've only talked about the binary case, where the
+possible labels are plus one or minus one.
+What happens when there are more clauses?
+How can we accommodate them?
+So we'll see that there's a simple, unifying formalism
+that lets us extend all three of these methods to
+multiclass.
+And we'll look at them one by one.
+So in this class we've studied all sorts of different
+methods for classification,
+and some of them are inherently multiclass.
+Nearest neighbor for instance.
+It automatically adapts to however many classes there are.
+You don't need to do anything special at all.
+Generative models are also inherently multiclass.
+You just fit a Gaussian or some other distribution to each
+individual class, and that's it.
+Nothing else needs to be done.
+Linear classifiers on the other hand, seem a little
+bit tricky.
+After all, when you have a line there are only
+two sides to it.
+So how can we possibly accommodate more classes?
+So to get the main idea, let's think back to Gaussian
+generative models.
+What we were doing there, was to fit a Gaussian to
+each class.
+So maybe a Gaussian for class one, another Gaussian
+to class two, another Gaussian to class three,
+another one for class four and so on.
+We observe then, that the log of the Gaussian density
+is a quadratic function.
+And so effectively, each class has got its own
+quadratic function.
+When a new point comes along, each class evaluates its
+quadratic function, and the one with the highest value
+is the winner.
+That's the label we predict.
+So we can do something similar to this for linear
+classification.
+We can let each class have its own linear function.
+Okay, so let's see what that means.
+So let's say we have data in d dimensional space.
+So our data points x line rd.
+And let's say that the linguals now have k possible value.
+Say one, two, all the way to class number k.
+We will let each class have its own linear function.
+Okay, so class one has some linear function.
+Lets call it w one dot x plus b one.
+And here w one is a vector in d dimensional space
+and b one is just an offset, just a number.
+Class two has its own linear function, say w two dot
+x plus b two.
+All the way to class k.
+Say wk dot x plus bk.
+And now when a new point comes along, when a new point x
+arrives, every class evaluates its linear
+function, and the one with the largest value is the winner.
+And that's the label we predict.
+So let's see how this works out for logistic regression.
+So if a binary logistic regression, which is the case
+we studied before, if you remember, we just had one
+linear function, w dot x plus b.
+And for any given point x the probability that y
+equals one was given by this formula over here.
+Now let's move to the case where we have k possible labels,
+one through k.
+We'll now have a linear function for each label.
+So for label one we have w one b one.
+For label two, w two b two.
+For label k wk, bk.
+And for any given point x, the probability that
+the label is j, the probability that y equals j
+is going to be proportional to e raised to the jth
+linear function.
+Wj dot x plus bj.
+Okay?
+So the higher this linear function, the larger the value
+of this function, the more likely it is that the label
+is j.
+Okay so we said proportional to.
+What is the exact formula for the probability?
+We just need these to add up to one.
+So we just need to normalize.
+So the probability that y is j given x is exactly
+that term up there.
+E to the wj dot x plus bj.
+And now we normalize it so we divide it by the term
+for class one, plus the term for class two, all the
+way to the term for class k.
+Okay, so that's the probability that y equals j
+given x.
+Now what label would we predict for x?
+Well, the one for which this function is the highest.
+The one for which wj dot x plus bj is largest.
+In other words the argmax of this.
+And that's it.
+So here's a summary over here,
+of our prediction rule and our model.
+How about learning?
+So let's say we have a training set, x one, y one, all the
+way through xn, yn.
+How do we learn these k linear functions?
+Well, we'll do exactly what we did in the binary case.
+We'll just pick the parameters that maximize the likelihood
+of the data.
+That is, that maximize the probability of the first data
+point times the probability of the second data point
+all the way to the probability of the nth data point.
+So that's this function over here.
+And as usual, products are a little bit tricky to deal
+with, so we can just take the logarithm to make it into
+a sum.
+And if we wanna make it into a minimization problem,
+we can just stick a minus sign in front.
+And when we do that, we end up with a convex minimization
+problem.
+In other words, it's a problem that's quite eaxi to
+solve, and in practice it will just hand the data over to
+a package which will then return the solution to us.
+So multiclass logistic regression is not a problem at all.
+Now let's move on to the perceptron algorithm.
+That was just four lines of code.
+Can we somehow adapt the perceptron to deal with
+multiple classes?
+And it turns out that it's actually really simple to do so.
+Here's the modified algorithm:
+also very short.
+So we have a training set, x one, y one all the way through
+xn, yn.
+And as usual, we begin by setting all the parameters to
+zero.
+By setting all the linear functions to zero.
+In this case we have k and m.
+Then we start going through the data set,
+and each time we come to a point that's misclassified
+we do a little update.
+So we go through the data, and let's say that we arrive at
+a particular point xy.
+The first thing we have to do is to figure out what label
+we would predict on x given our current parameters.
+And that label is simply the label j that maximizes
+wj dot x plus bj, where the ws and bs are our current
+parameter values.
+So let's say that the label we predict is y hat.
+Now if that's the correct label, if y hat equals y,
+then we don't have to do anything.
+But if we predicted the wrong label, if y hat is not
+equal to y, then we have to update the parameters.
+But which parameters do we update?
+We have k different linear functions.
+Well we're only going to update two out of the k functions.
+We're gonna update the function for the correct label,
+and the function for the label that we actually
+predicted.
+And both of these updates are very simple.
+So for the correct label, we simply add x to the w
+vector, and increment b.
+For the label we predicted, we just subtract x from
+the w vector, and decrement b.
+And that's it.
+The multiclass proceptron algorithm.
+So let's see it at work on a simple data set.
+So here is some data in two dimensions, and with
+three classes.
+We have the black triangles, the blue stars, and the
+red circles.
+What does multiclass perceptron do on this?
+Well this is the bine boundary that it finds.
+It perfectly classifies the data.
+Now as you can see, the boundary that it finds is
+made up of three linear pieces.
+There's this piece over here,
+this piece over here, and
+this piece over here.
+And basically it keeps cycling through the data,
+until it finds this perfect classifier at which
+point it immediately holds.
+It does not for instance, try to optimize the boundary
+further for instance by trying to center the boundary
+or by trying to maximize the margin in some way.
+So that makes us wonder, what about the support vector
+machine?
+Can we make that multiclass as well?
+And indeed we can, and it's quite simple.
+Here is the convex program for multiclass support vector
+machine.
+So as before, let's say we have a training set,
+x one y one through xn yn.
+As usual, we want to minimize the norm of w squared,
+but in this case we have k different ws so what we are
+minimizing is the sum of all of their squared norms.
+As usual with the soft margin SVM, we have a slack parameter
+for each data point.
+Now if you'll recall the function of this was to allow
+us to violate some of the constraints, because for
+example, it might not be possible to perfectly classify
+all of the training data.
+So the slack parameter allows us to violate some of these
+constraints, but we don't want too much violation.
+And so we include the sum of the slack variables in the
+function that we want to minimize.
+And that remains unchanged from before, from the soft
+margin SVM.
+And then, over here, we have the constraints that say
+that we want the data points to be classified correctly.
+So what exactly are these constraints?
+Let's take a look.
+Let's say we have a particular data point, xi, yi.
+Now there are k possible labels.
+In order for this point to be correctly classified, we
+need the linear function for the correct label to
+beat out the linear function for any of the
+incorrect labels.
+So for the linear function for ys of i, has to be
+greater than the linear function for the k minus
+one other labels.
+The ys that are not equal to ys of i.
+So if we write out this condition, what we have is that
+the correct linear function which is w of ys of i,
+the w for the correct label, dot x of i plus b of
+ys of i should exceed any of the wrong linear functions.
+So wy dot x of i plus by for any of the labels that
+is incorrect.
+This is the condition that says that all the points are
+perfectly classified.
+Now as we did before, we can equivalently insist, that
+actually the correct label exceeds the incorrect labels
+by one.
+And we can do this by simply rescaling the ws and because
+appropriately.
+So this is another way of saying that all the points are
+correctly classified.
+Now of course it might not be possible to correctly
+classify all the points, so we do have to allow a
+little bit of slack, and that's where we include
+the slack variable xis of i.
+Okay so these are our final constraints, and this is
+exactly the inequality we have over here, just shifted
+around a little bit.
+So this is the convex program for the multiclass SVM.
+So let's see it at work.
+This is the iris data set which we've talked about before.
+I've chosen two of the four features.
+There are three classes and it's clear that the data is
+not linearly separable.
+In particular we would not be able to run the perceptron
+algorithm on this.
+Okay, but let's see what the multiclass,
+soft margin SVM does.
+This is the boundary it finds.
+It does a very good job.
+As usual, it is a very competent classifier.
+So let's end with a little bit of a, with a small question.
+So this was the convex program for the multiclass
+soft margin SVM.
+How many variables do we have here and how many
+constraints?
+Let's see if we can count these.
+So the variables are the ws.
+So w one through wk.
+How many parameters do we have there?
+Well each of them is a d dimensional vector,
+so it's a total of kd parameters.
+Our variables also include b1 through bk.
+Each of them is a number, so that's k parameters,
+and then we have the slack variables.
+xi one through xi m.
+So m parameters.
+So the total number of variables is kd plus k plus m.
+How about constraints?
+How many constraints do we have over here?
+Okay, so let's see, for each point we need the correct
+label to beat out the k minus one incorrect labels.
+So for each point we have k minus one constraints.
+So the total number of constraints since there are n
+data points is n times k minus one.
+And that's it.
+Okay that's good for today.
+We've seen how we can extend our linear classification
+methods from binary to multiclass.
+It's really quite simple and in fell swoop we were able
+to take care of logistic regression, proceptron, and the
+support vector machine.
+See you next time.

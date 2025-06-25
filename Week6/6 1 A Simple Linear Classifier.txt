@@ -1,0 +1,334 @@
+- Recently, we've been talking a lot
+about regression and conditional probability estimation.
+The way we've been approaching these problems
+is to phrase the learning task as an optimization problem,
+defining a suitable loss function,
+and then looking at ways to minimize it.
+What we're going to do now is
+to circle back round to classification,
+bringing with us this new optimization-centric mindset.
+We'll talk about binary classification
+and how it might be solved using a linear separator.
+We'll define a suitable loss function for classification,
+and then look at a stochastic
+gradient descent procedure for it.
+This will yield the Perceptron algorithm.
+Here is a linear boundary, n r two.
+What is the equation of this line?
+Let's go ahead and figure this out.
+We have, let's call this feature x one
+and this feature x two.
+The equation of this line is something of the form
+x two equals the slope times x one plus the intercept.
+So what is the slope over here?
+It's minus 4/3.
+So minus 4/3 x one
+plus the intercept on the y-axis, which is four,
+that's the equation of the line.
+Now, we'll be writing it in a slightly different way.
+So let's multiply through by three
+and then this becomes four x one plus three x two
+minus 12 equals zero.
+And we'll always be writing linear decision boundaries
+in this way, in the form w dot x plus b equals zero.
+The form w dot x plus b equal zero.
+That's the equation of this line
+and that's gonna be a decision boundary.
+Points on this side we'll say are plus,
+points on this side we'll say are minus.
+Now, how do we make a prediction on a new point?
+Let's say we get a new point x,
+maybe this point over here, three three.
+How do we predict the label at that point?
+Well, we plug it into our linear function.
+So we have this linear function over here.
+We plug in three three.
+What do we get?
+We get four times three, 12,
+plus nine minus 12, that's nine.
+That's greater than zero.
+So we classify it as positive.
+Let's take another point, maybe one one over here.
+Let's plug it into our linear function,
+four x one plus three x two minus 12,
+what do we get?
+We get four plus three minus 12.
+What is that?
+That is negative five.
+That's less than zero.
+So we classify that point as negative.
+So the classification rule is very simple.
+When we get a new point,
+we simply compute our linear function,
+which is four x one plus three x two minus 12,
+and then we look at the sign of that.
+So we take this and we look at its sign.
+If it's a positive number, we say the class is plus one,
+if it's a negative number, we say the class is minus one.
+In a little bit more generality,
+if we have data now in d dimensional space,
+so points x and R d,
+and two possible labels, plus one and minus one,
+this is a general setting for binary classification.
+We're gonna be looking at situations
+where we have a linear classifier.
+So there's a decision boundary which is linear,
+it's of this form, w dot x plus b equals zero.
+And here, w and b are parameters.
+They're the parameters of the linear function
+that we have to figure out,
+typically from training data.
+So these are our parameters over here.
+When we get a new point x
+and we have to predict its label, plus one or minus one,
+the way we do it is, we compute this linear function
+and then we just return its sign.
+We just see whether it's positive or negative.
+And that's the answer.
+So when are we correct?
+Let's say we get a new point x y.
+When are we correct on that point?
+We're correct if
+the label of y, plus one or minus one,
+has the same sign as w dot x plus b.
+So y has the same sign
+as w dot x plus b.
+To spell it out even more,
+what that means is that either y is plus one
+and w dot x plus b is greater than zero,
+let's say greater than zero,
+or y is minus one
+and w dot x plus b is less than zero.
+If that happens, then we're correct.
+And now we have two conditions over there,
+we can combine them into a single,
+more concise condition, like this.
+We can just say that y times w dot x plus b
+is greater than zero.
+Either they're both greater than zero
+or they're both less than zero.
+So this is a nice, concise way
+of writing the condition that we are correct on point x y.
+We'll be using this formulation quite a bit more.
+Now let's come up with a loss function for classification.
+We have some linear classifier given by w b
+and we want to know what is the loss
+incurred by this classifier on a point x y?
+How should we define this loss?
+Should we use squared loss or logistic loss?
+What's a suitable loss function?
+There are actually many ways to do this.
+There are many different loss functions for classification.
+They all have their strengths and weaknesses.
+And we'll just look at one particular
+plausible loss function right now.
+We have a point x y.
+Let's say we are correct on that point.
+So y times w dot x plus b is greater than zero.
+If we're correct, we'll just say no loss.
+We are correct.
+Nothing to worry about.
+On the other hand, if we are wrong,
+if y times w dot x plus b is less than zero,
+if y and w dot x plus b have different signs,
+then we are wrong.
+How much penalty should we incur?
+Well, one thing we can do is to say
+that our penalty is the amount by which we are wrong.
+What does that mean?
+Let's say that the correct label is plus one.
+And when we compute w dot x plus b
+it turns out to be negative .1.
+So we are wrong because we predict minus.
+But we're only wrong by a little bit, only by .1.
+So we shouldn't feel too bad about it.
+In that case, we'll think about a loss
+as being just .1.
+On the other hand, if y equals plus one
+and w dot x plus b equals minus six,
+then we're pretty far wrong.
+We also predict minus.
+But this time we're really far from that boundary.
+We're at minus six.
+So in this situation, we'll say our loss is six.
+Here is sort of a picture of the loss function.
+Over here I'll draw the possible values
+of y times w dot x plus b.
+And we want this to be positive.
+So we'd like this to be on this side of zero.
+Now let's look at the loss.
+I'll draw that on the y-axis.
+If we classify the point correctly,
+then our loss is zero.
+Then we lie along this line.
+No loss at all, we're correct.
+If we are wrong, then our loss looks like this.
+Now, one notable feature of this loss function
+is that it's convex.
+Why is that?
+Because if you look at any two points on the curve
+and you connect them,
+the graph, the curve lies below that line.
+So this is a convex loss function.
+Okay, that's something that should
+in general make us feel good.
+But now let's go about trying to find a linear classifier
+that is minimizing this loss.
+We could do that by gradient descent if we wanted to.
+But to keep things really simple,
+let's just use stochastic gradient descent.
+The way this is gonna work,
+this is our local search method.
+So we start by setting w and b to any old values.
+Let's say we start them at zero.
+Then we keep updating them.
+So we update w and b a little bit
+and then we update it some more
+and we keep going in this way.
+And in stochastic gradient descent,
+each update is just based on a single data point.
+So we first update on the first data point,
+then we update on the second data point,
+and we keep going through the dataset.
+When we reach the bottom, we cycle back round to the top
+and then update on the first point,
+second point, and so on.
+What are these updates?
+The update is to take w and b
+and then move in the negative direction of the derivative.
+Okay, so let's work that out.
+We have our current guesses, w and b.
+New data point arrives, the next on the list.
+That's some point x and y.
+What's our update gonna be?
+Well, let's say we actually get x and y correct.
+So let's say y times w dot x plus b is greater than zero.
+In that case, the loss is zero
+and the derivative is zero, so there's not update.
+That's easy.
+What if we get it wrong?
+What if w times x plus b has a different sign from y?
+In that case, the loss that we've formulated
+is minus y times w dot x plus b.
+What is the derivative of this thing?
+Let's see, what is the derivative of this
+with respect to w?
+Well, it's just minus y x.
+And what's the derivative of this with respect to b?
+It is just minus y.
+So the stochastic gradient update in this case
+would be to take w
+and move in the negative direction of the derivative.
+So we take w and we go plus y x,
+and we have a step size, eta.
+We take b and we also move in the negative direction,
+so step size times y.
+That's the stochastic gradient update.
+Very simple.
+Well, there's the matter of the step size.
+We have to decide what to set eta to.
+Let's just keep things extra simple.
+Let's just make it equal to one
+so we can get rid of this.
+That's gonna be our update.
+When we do things in this way,
+we get the Perceptron algorithm.
+Here it is.
+Very simple algorithm.
+We start w and b at zero.
+Then we just keep cycling through the data.
+If we're correct on the next data point,
+then nothing to do.
+If we are wrong on the data point,
+then we simply take w and add y x to it
+and we take b and add y to it.
+That's it.
+This is literally four lines of code.
+Let's see it at work.
+Here are 85 data points, and they're linearly separable.
+So there really, it's a line
+that separates the pluses from the minuses,
+or in this case, the red circles from the black triangles.
+Let's run the Perceptron algorithm on this dataset
+and see what linear separator it finds.
+Now, usually when you run Perceptron
+or a stochastic gradient descent algorithm of some kind,
+one thing that is often done
+is to begin by randomly permuting the data,
+in case they're in some sort of weird order.
+Now, in the case of Perceptron,
+different random permutations
+can lead to different outcomes.
+Let's just look at several runs.
+This is the first run.
+It found a linear separator
+that perfectly classifies the data.
+It made nine updates.
+What I mean by that is that,
+if we go back to the algorithm over here,
+this is what I'm calling an update.
+When it gets to a point on which it's wrong,
+it updates the parameters.
+In this case, it only did nine updates.
+Once it did those nine updates,
+it cycled through the dataset
+and it was correct on everything it saw.
+So it stopped at that point.
+Here's another iteration.
+This time it made 15 updates.
+Another one, this one did eight updates.
+Another one, 14 updates.
+Another one.
+This one was eight updates.
+Here's one question.
+In this case, it did eight updates.
+What do you think the final value of b was in this case?
+Well, let's go back to the algorithm.
+B starts out at zero.
+And each time you make a mistake,
+you change b by adding y to it.
+Now, y is either plus one or minus one.
+So each time you do an update,
+b either goes up by one or goes down by one.
+That means that if you make eight updates total,
+the final value of b is an integer
+which is somewhere between minus eight and plus eight.
+That's something that we can infer
+just from the fact that there were eight updates.
+Okay, so we had these multiple different runs,
+and every single time, it found a perfect classifier.
+In fact, this wasn't just a lucky dataset.
+The Perceptron algorithm is guaranteed to do this.
+So there's a mathematical theorem that says
+that if the data is linearly separable,
+in other words if there is some linear boundary
+that separates the pluses from the minuses,
+then the Perceptron algorithm will find such a boundary.
+It's guaranteed to.
+And it will converge within a finite number of steps.
+Not bad.
+A four-line algorithm that is guaranteed
+to always return the correct answer.
+Now, if we have a dataset like this, for instance.
+So here we have eight points.
+What this theorem is telling us is
+that the final answer is gonna be
+some separator like the one shown.
+Something that really does separate the reds from the blues.
+Now, one thing one might think at this point here,
+another way now that we have this under control,
+maybe we can get a little bit greedy and say,
+"Well, maybe these are not all equally good.
+"Can we get something that's more central?
+"Maybe something that's right in the middle?"
+And that's exactly the question
+that we'll tackle next time.
+For now, that's it.
+We have seen the Perceptron algorithm
+and we derived it by formulating a loss function
+and looking at the stochastic gradient descent algorithm
+for that loss function.
+And the result is a four-line algorithm
+that any of us could code up in five or 10 minutes.
+It's one of the real gems of machine learning.
+See you next time.

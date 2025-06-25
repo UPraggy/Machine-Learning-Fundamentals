@@ -1,0 +1,415 @@
+- Last time,
+we introduced the support vector machine.
+Given a training set,
+this finds the linear classifier with the widest margin
+by solving a convex program.
+It works beautifully,
+but it's only for data that is linearly separable.
+That is, data for which there truly is
+a linear classifier
+that perfectly separates the plusses from the minuses.
+In practice, this is often not the case.
+So what we'll do today
+is to look at another version of the support vector machine
+called the soft-margin SVM.
+This can deal with any type of data.
+So, we'll see how situation of non-separable data
+can be handled quite easily
+by introducing new slack variables
+into the convex program.
+We'll then look at how this works in practice
+and at some of the issues that arise.
+Okay, so here is the situation from last time.
+We have a data set,
+a training data set of n points,
+x one through x n,
+and each point has a label,
+y one through y n.
+These are plus one or minus one.
+It's a binary classification task.
+The support vector machine finds a linear classifier
+by solving a convex program.
+This program over here.
+So it looks for a linear classifier
+given by a vector w,
+and an offset b.
+And this program, this convex program
+contains n linear constraints,
+these constraints over here,
+one for each data point.
+What the constraint says
+is that that data point has to be correctly classified.
+Now, subject to these constraints,
+the program additionally wants to find the classifier
+that has the widest margin.
+And as we saw,
+this is the same as minimizing the length of w.
+Or equivalently,
+the square length of w.
+Now, this is a convex program,
+which means that it can be solved efficiently.
+And there are packages that will just do this for us.
+We don't have to worry about
+the algorithmics behind it.
+Moreover, the solution, the w that arises in the end,
+is of a very nice form.
+It's a linear combination
+of the data points, of the x i's,
+and moreover, this linear combination only uses
+some of the data points.
+The ones that happen to lie exactly on the margin.
+These are the support vectors.
+So it's a very nice picture.
+This is all very well.
+But this only works if data is linearly separable,
+and the question is,
+what happens in the non-separable case?
+For instance,
+suppose there were a blue point over here.
+If we had that, then there would be no linear classifier
+that could perfectly classify the craning data,
+so we would not be able to satisfy all of these constraints.
+We'd have to give up on some of them.
+How do we do that?
+It turns out that a very simple way of doing this
+is to introduce new slack variables.
+And let me explain what that means.
+So previously, for each data point i,
+we insisted that y i times w dot x i times plus b
+be greater than or equal to one.
+That was a hard constraint.
+Now, we are in general
+not going to be able to satisfy
+all n of these constraints.
+So what we'll do
+is we'll allow some of these constraints to be violated.
+And we will introduce a new slack variable,
+xis of i, this is the Greek letter xi.
+We'll introduce these variables,
+one per data point,
+and then capture the extent of the violation.
+Okay?
+So for data point i, we would ideally like
+y times w dot x plus b
+to be greater than or equal to one.
+But we'll allow it to be violated,
+and xis of i tells us
+how large of a violation we have on that particular point.
+Now, the thing we want to minimize
+is the same thing as before,
+w squared, because we want to widen the margin.
+But at the same time,
+we want to make sure
+that too many constraints aren't violated.
+So we also add in the sum of the xi i's.
+The overall extent to which the constraints are violated.
+So to understand these slack variables a little bit more,
+let's look at this picture.
+So here we have a decision binary,
+w dot x plus b equals zero.
+The margin on this side is w dot x plus b equals one.
+And the parallel hyperplane on the other side
+is w dot x plus b equals minus one.
+Okay.
+The margin of this case
+is this distance over here.
+And as we saw before,
+this distance is just one over the length of w.
+So that's all the same as last time.
+But what's different now
+is that the points aren't all
+exactly where we would like them to be.
+Okay?
+Look at this point for instance.
+It's on the correct side of the boundary,
+it's on the red side of the boundary.
+But we want it to be to the right of this margin.
+And it's not.
+It falls a little bit short.
+For that particular point,
+we would ideally like w dot x i plus b
+to be greater than or equal to one.
+But it's not.
+It's actually equal to something like .25.
+So we make up that difference using the slack variable.
+The slack variable on that particular point
+is therefore .75.
+The difference between the actual value
+of y times w dot x plus b,
+and what we would like it to be.
+Now let's look at this point.
+This point is actually on the wrong side of the boundary.
+It's on the red side of the boundary.
+Okay, so it's very far from where we want it to be.
+We want it to be all the way there.
+So what is the slack variable on that?
+Well, there's a slack of one just to get to the boundary,
+and an additional slack of about point five.
+So the slack variable on that point
+will be something like 1.5.
+Now in this picture,
+those are the only two data points
+on which any slack at all is used.
+The other ones are just fine.
+They're where we want them to be.
+And so the total amount of slack that we've used,
+which is the sum of these xi i's
+from i equals one to n,
+is in this picture,
+just .75 plus 1.5.
+So 2.25.
+Okay?
+So let's see this at work.
+So this is the winery data set
+from a few weeks ago.
+If you don't remember it, that's fine.
+All that matters here
+is that it's a two-dimensional data set.
+It's got two classes,
+over here shown as red and black.
+And it's not linearly separable.
+Okay, there's no linear separator
+that will separate the reds and blacks.
+So let's see what the soft-margin support vector machine
+does on it.
+Here's the result.
+Not too bad, okay?
+It's found a reasonable boundary.
+The points that I've shown in bold are the support vectors.
+They now include any point that's actually on the margin,
+like that point,
+as well as any point
+that's not on the right side of the margin.
+So that includes all the points that are in the middle
+as well as these points over here that are far out.
+So in this picture,
+there are quite a lot of support vectors.
+Okay?
+But it seems to be working fairly well.
+Now, over here, I've said that c equals 1.0.
+What is that?
+What is this c over here?
+Well, let's go back
+and look at the convex program.
+Oh, here is the c that I'm referring to.
+What is that thing?
+Well, there are two things we're trying to minimize.
+We're trying to minimize the length of w,
+because we want a large margin.
+And we're also trying to minimize the total amount of slack.
+The sum of the xi i's.
+This is because we don't want
+too many constraints to be violated.
+So there're two things we're trying to minimize,
+and there will inevitably be
+a tradeoff between these two things.
+So c is a constant that manages that tradeoff.
+It's something that we have to set appropriately.
+Okay?
+So to understand the effect of c,
+let's look at the two extremes.
+Let's look at when c is as small as possible,
+when c is zero,
+and the other extreme, when c is really large.
+When c goes to infinity.
+And let's see what happens in each case.
+Okay, so what happens when c is zero?
+When c is zero,
+this second term basically vanishes.
+It says that slack is free.
+We can use as much slack as we like,
+there's no charge for it.
+We can go ahead and violate as many constraints as we like.
+We can make those xi i's as large as we like.
+It's all free.
+The only thing we want to do
+is to minimize the length of w.
+So what are we going to do?
+We're going to set w to zero.
+Okay.
+Now, let's look at the other extreme.
+If c equals infinity,
+that means that slack is infinitely expensive.
+If we use even a tiny amount of slack,
+the cost for it is infinity.
+So we're not going to use any slack at all,
+which gets us back to the previous hard margin SVM.
+We're going to have to classify every point perfectly.
+No slack allowed.
+Okay?
+Now, of course, we're going to pick some number
+between these two extremes,
+and let's see a small example of how this pans out.
+So this is the Iris data set from last time,
+and over here I'm just showing two different classes,
+two of those three types of flower.
+Okay, so we have the reds and the blacks.
+This is two-dimensional data.
+And as you can see,
+it's linearly separable.
+So let's start with a large value of c.
+If you'll remember, that means that slack is expensive.
+And so we're essentially backing the case
+of the hard-margin SVM.
+So in that case,
+this is the solution we get.
+Okay?
+All constraints are satisfied perfectly,
+and there are three support vectors.
+These three points.
+This is the hard-margin SVM solution.
+Now let's reduce c a little bit, okay?
+Let's make slack a little bit cheaper.
+This is what happens.
+Okay, so we reduce c to three.
+And now we're starting to use some slack.
+We're using a little bit of slack on this point.
+And we're using a little bit of slack on this point.
+And now there are four support vectors.
+We have two support vectors that are actually on the margin,
+and then there are two points on which we're using slack.
+A total of four support vectors.
+So what exactly is going on over here?
+The data is linearly separable.
+There is no need to violate any constraints.
+Why is it violating constraints?
+Why is it doing this?
+And it's doing this
+because it's allowed to violate constraints.
+Slack is not too expensive.
+And because in doing so,
+it gets a wider margin.
+See, this is the margin we had before.
+And this one is slightly larger.
+We've got a slightly larger margin.
+So let's reduce c a little bit more.
+Oh, now we're violating some more constraints.
+This one is violating quite a bit.
+What do you think the slack variable on that is?
+Well, it's probably something like,
+I don't know.
+The xi on that might be point six roughly.
+Quite a lot of slack on that one.
+And now we have six support vectors.
+We have these six points over here.
+They're all support vectors.
+And we have a wider margin.
+Let's reduce c some more.
+Even more support vectors,
+even wider margin.
+And wider, and wider,
+and now all the constraints are violated,
+and we have a very wide margin.
+Okay?
+So this is what happens as you vary that parameter c.
+Now, let's look back at the sentiment data set.
+So if you'll recall,
+this is the data set
+that contains sentences that have been pulled out
+from reviews of products or movies or restaurants.
+Okay?
+So each data point is just one sentence,
+and it's been labeled as positive or negative.
+Is it a positive review or a negative review?
+Now when we were talking about logistic regression,
+we were looking at this data set,
+and we saw that you can convert each sentence into a vector
+by using the bag-of-words representation.
+Okay, so each sentence is now a vector,
+and we have 2,500 training points
+and about 500 test points.
+Not a huge amount of data.
+Okay?
+In order to use the soft-margin support vector machine
+on data like this,
+we have to decide how to set that parameter c.
+So let's look at the effect of different settings of c.
+So here, I'm increasing c by orders of magnitude.
+Okay.
+And if you remember, as c gets larger,
+it means slack becomes more and more expensive.
+So slack, more expensive.
+When slack becomes more expensive,
+it means fewer and fewer constraints are violated,
+okay,
+and as a result,
+the training error goes down.
+That explains that.
+And because fewer constraints are violated,
+the number of support vectors is also going down,
+if you'll notice over here.
+That's because the support vectors
+include the points on the margin,
+but also any point for which the constraint is violated.
+Okay, so as the number of violations is going down,
+it's reasonable that the number of support vectors
+is also shrinking.
+But what happens to the test error?
+So we had that separate test set of 500 points.
+The test error goes down a little bit,
+and then it starts to go up.
+So the sweet spot seems to be
+somewhere between
+point one and ten.
+Somewhere in there.
+Which c do we pick?
+How do we choose a value of c?
+In reality,
+we wouldn't have a test set that we could peek at.
+We'd just have the training set.
+We'd just have the training error.
+How do we pick c?
+As always, we would pick it using cross-validation.
+Okay?
+And let's see how that works out.
+So what I've done over here
+is to try a whole bunch of different values of c.
+And I've shown them over here on a log scale.
+Okay?
+So I've tried values of c that go from
+one over a thousand to well above a thousand.
+Okay.
+And for each value of c,
+we have to estimate the resulting error
+using only the training set.
+The way we do that is with cross-validation,
+and in this case I've used 5-fold cross-validation.
+So there's a training set of 2,500 points.
+We divide it into five batches, okay?
+So first, I treat the first batch of 500 points
+as a test set,
+train on the remaining 2,000 points,
+and look at the error on those 500 points.
+Then treat the next batch of 500 points as the test set,
+remain- train on the remaining 2,000 points,
+obtain the error on those 500 points,
+and so on.
+And in this way, I get five error numbers,
+and I take their average.
+And that's how I get an error estimate
+for every particular value of c.
+Okay, so for each value of c,
+I do 5-fold cross-validation
+and I get some error estimate.
+As you can see,
+these estimates dip quite a bit at first,
+and then they start going up.
+So which is the best value of c to use?
+Well, based on this cross-validation,
+we would pick this one right there.
+Okay?
+And that turns out to be c equals .32,
+and the resulting test error is 15.6%.
+Not bad at all.
+Okay, well that's it for today.
+Today we've seen the soft-margin SVM,
+which is the form of the SVM
+that's typically used in practice.
+It's an extremely competent linear classifier.
+The amazing thing is
+that you can actually use it to go even further,
+to obtain boundaries that are quadratic
+or polynomial or beyond,
+and in the upcoming week,
+we'll see how to do this.
+See you later.
